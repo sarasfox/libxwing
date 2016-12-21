@@ -92,7 +92,7 @@ std::list<Upgrade> Upgrade::upgrades = {
   
   { "Proton Torpedoes",             "Proton Torp",      "protontorpedoes",            Upg::Torpedo,           4, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Adv. Proton Torpedoes",        "Adv. Proton",      "advprotontorpedoes",         Upg::Torpedo,           6, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
-  { "Flachette Torpedoes",          "Flachette",        "flachettetorpedoes",         Upg::Torpedo,           2, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "Flechette Torpedoes",          "Flechette",        "flechettetorpedoes",         Upg::Torpedo,           2, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Ion Torpedoes",                "Ion",              "iontorpedoes",               Upg::Torpedo,           5, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Bomb Loadout",                 "Bomb Loadout",     "bombloadout",                Upg::Torpedo,           0, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Extra Munitions",              "Extra Mun",        "extramunitions",             Upg::Torpedo,           2, false, true,  { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
