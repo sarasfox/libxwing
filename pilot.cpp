@@ -198,7 +198,7 @@ void Pilot::Dump() {
   if(fancy) {
     //      C  C |co C   |pi  |sh
     printf("%s[%s%hhd%s] %s - %s\n",
-	   WHITE,GRAY,this->cost,WHITE, this->pilotName.c_str(), this->shipName.c_str());
+	   WHITE,GRAY,this->GetModCost(),WHITE, this->pilotName.c_str(), this->shipName.c_str());
     
     //      C |sk C    C |attC /C |agi  /C |hulC /C |sh C
     printf("%s%hhu%s - %s%hhd%s/%s%hhd%s/%s%hhd%s/%s%hhd%s - ",
@@ -209,7 +209,7 @@ void Pilot::Dump() {
       printf("[%s]", UpgToString(u).c_str());
     }
     printf("\nUpgrades:");
-    for(auto u : this->appliedUpgrades) {
+    for(auto u : this->GetAppliedUpgrades()) {
       printf(" [%s]", u.GetUpgradeName().c_str());
     }
     printf("\n");
