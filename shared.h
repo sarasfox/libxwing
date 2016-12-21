@@ -40,7 +40,8 @@ enum class Act : uint32_t {
   Evade      = 0x0010,
   Cloak      = 0x0020,
   SLAM       = 0x0040,
-  RotateArc  = 0x0080
+  RotateArc  = 0x0080,
+  Coordinate = 0x0100
 };
 Act operator|(Act a, Act b);
 Act operator&(Act a, Act b);

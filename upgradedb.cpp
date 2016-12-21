@@ -31,6 +31,7 @@ static UModifier UNone = [](const Pilot&) { return std::vector<Upg>(); };
 #define uTIX1 [](Pilot p) { return std::vector<Upg>{Upg::System};}
 #define uTIX7 [](Pilot p) { return std::vector<Upg>{Upg::Cannon,Upg::Missile};}
 #define uVIRA [](Pilot p) { return std::vector<Upg>{Upg::System,Upg::Illicit};}
+#define uSAMP [](Pilot p) { return std::vector<Upg>{Upg::Crew,Upg::Illicit};}
 
 std::list<Upgrade> Upgrade::upgrades = {
   // Name                            ShortName           XwsName                      Type                   Co  uni    lim      sk     at     ag     hu     sh     co     +act   -act   +upg   -upg
@@ -71,6 +72,8 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Trick Shot",                   "Trick Shot",       "trickshot",                  Upg::Elite,             0, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Expertise",                    "Expertise",        "expertise",                  Upg::Elite,             4, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Swarm Leader",                 "Swarm Leader",     "swarmleader",                Upg::Elite,             3, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "Snap Shot",                    "Snap Shot",        "snapshot",                   Upg::Elite,             2, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "A Score to Settle",            "Score to Settle",  "ascoretosettle",             Upg::Elite,             0, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
 
   { "R2-D2",                        "R2-D2",            "r2d2",                       Upg::Astromech,         4, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "R2-F2",                        "R2-F2",            "r2f2",                       Upg::Astromech,         4, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
@@ -170,13 +173,18 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Finn",                         "Finn",             "finn",                       Upg::Crew,              5, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Rey",                          "Rey",              "rey",                        Upg::Crew,              2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Hotshot Copilot",              "Hotshot Copilot",  "hotshotcopilot",             Upg::Crew,              4, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
-
   { "Jyn Erso",                     "Jyn Erso",         "jynerso",                    Upg::Crew,              2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Cassian Andor",                "Cassian Andor",    "cassianandor",               Upg::Crew,              2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Baze Malbus",                  "Baze Malbus",      "bazemalbus",                 Upg::Crew,              3, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Bistan",                       "Bistan",           "bistan",                     Upg::Crew,              2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Bodhi Rook",                   "Bodhi Rook",       "bodhirook",                  Upg::Crew,              1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Inspiring Recruit",            "Insp Recruit",     "inspiringrecruit",           Upg::Crew,              1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "Captain Rex",                  "Capt. Rex",        "captainrex",                 Upg::Crew,              2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "Kylo Ren",                     "Kylo Ren",         "kyloren",                    Upg::Crew,              3, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "General Hux",                  "Gen. Hux",         "generalhux",                 Upg::Crew,              5, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "Operations Specialist",        "Ops Specialist",   "operationsspecialist",       Upg::Crew,              3, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "Unkar Plutt",                  "Unkay Plutt",      "unkarplutt",                 Upg::Crew,              1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "BoShek",                       "BoShek",           "boshek",                     Upg::Crew,             99, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
 
   { "Millennium Falcon",            "MF",               "millenniumfalcon",           Upg::Title,             1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, aMFAL, ANone, UNone, UNone } },
   { "Slave 1",                      "Slave 1",          "slave1",                     Upg::Title,             0, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
@@ -210,6 +218,8 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Millennium Falcon",            "MF (HOTR)",        "millenniumfalcon-swx57",     Upg::Title,             1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Pivot Wing",                   "Pivot Wing",       "pivotwing",                  Upg::Title,             0, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Adaptive Ailerons",            "Adapt Ailerons",   "adaptiveailerons",           Upg::Title,             0, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "Sabine's Masterpiece",         "Sabine's Mpiece",  "sabinesmasterpiece",         Upg::Title,             1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, uSAMP, UNone } },
+  { "Kylo Ren's Shuttle",           "Kylo Ren's",       "kylorensshuttle",            Upg::Title,             2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, uSAMP, UNone } },
 
   { "Engine Upgrade",               "EU",               "engineupgrade",              Upg::Modification,      4, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, aENUP, ANone, UNone, UNone } },
   { "Shield Upgrade",               "SU",               "shieldupgrade",              Upg::Modification,      4, false, false, { SNone, SNone, SNone, SNone,  S(1), SNone, ANone, ANone, UNone, UNone } },
@@ -235,6 +245,9 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Gyroscopic Targeting",         "Gyro Targeting",   "gyroscopictargeting",        Upg::Modification,      2, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Smuggling Compartment",        "Smuggling Comp",   "smugglingcompartment",       Upg::Modification,      0, false, true,  { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, uSCOM, UNone } },
   { "Lightweight Frame",            "LW Frame",         "lightweightframe",           Upg::Modification,      2, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "Captured TIE",                 "Captured TIE",     "capturedtie",                Upg::Modification,      1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "Spacetug Tractor Array",       "Spacetug Tractor", "spacetugtractorarray",       Upg::Modification,      2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  
 
   { "Heavy Laser Cannon",           "HLC",              "heavylasercannon",           Upg::Cannon,            7, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Ion Cannon",                   "Ion Cannon",       "ioncannon",                  Upg::Cannon,            3, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
@@ -278,10 +291,16 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Rigged Cargo Chute",           "Rigged Cargo",     "riggedcargochute",           Upg::Illicit,           1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Black Market Slicer Tools",    "BMST",             "blackmarketslicertools",     Upg::Illicit,           1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Burnout SLAM",                 "Burnout SLAM",     "burnoutslam",                Upg::Illicit,           1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, aBOSL, ANone, UNone, UNone } },
+  { "EMP Device",                   "EMP Device",       "empdevice",                  Upg::Illicit,           2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, aBOSL, ANone, UNone, UNone } },
+  { "Scavenger Crane",              "Scavenger Crane",  "scavengercrane",             Upg::Illicit,           2, false,  false, { SNone, SNone, SNone, SNone, SNone, SNone, aBOSL, ANone, UNone, UNone } },
   
   { "Weapons Guidance",             "Weap Guidance",    "weaponsguidance",            Upg::Tech,              2, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Comm Relay",                   "Comm Relay",       "commrelay",                  Upg::Tech,              3, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Sensor Cluster",               "Sensor Cluster",   "sensorcluster",              Upg::Tech,              2, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Pattern Analyzer",             "Pattern Analuzer", "patternanalyzer",            Upg::Tech,              2, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Primed Thrusters",             "Primed Thristers", "primedthrusters",            Upg::Tech,              1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "Targeting Synchronizer",       "Targeting Sync",   "targetingsynchronizer",      Upg::Tech,              3, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "Hyperwave Comm Scanner",       "HW Comm Scanner",  "hyperwavecommscanner",       Upg::Tech,              1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "Primed Thrusters",             "Primed Thrusters", "primedthrusters",            Upg::Tech,              1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+
 };

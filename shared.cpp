@@ -71,6 +71,7 @@ std::string ActToString(Act a) {
   case Act::Cloak:      return "Cloak";
   case Act::SLAM:       return "SLAM";
   case Act::RotateArc:  return "RotateArc";
+  case Act::Coordinate: return "Coordinate";
   default:              return "???";
   }
 }
@@ -85,7 +86,8 @@ std::string GetActGlyph(Act a) {
   case Act::Cloak:      return "k";
   case Act::SLAM:       return "s";
   case Act::RotateArc:  return "R";
-  default:              return "";
+  case Act::Coordinate: return "R";
+  default:              return "o";
   }
 }
 
