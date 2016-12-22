@@ -24,6 +24,12 @@ struct Modifiers {
   UModifier remUpg;
 };
 
+
+
+struct Restrictions {
+};
+
+
 class Upgrade {
  public:
   static Upgrade GetUpgrade(std::string category, std::string name);
@@ -33,11 +39,12 @@ class Upgrade {
   std::string GetUpgradeNameShort();
   std::string GetUpgradeNameXws();
 
-  Upg        GetType();
-  int8_t     GetCost();
-  bool       GetIsUnique();
-  bool       GetIsLimited();
-  Modifiers GetModifier();
+  Upg          GetType();
+  int8_t       GetCost();
+  bool         GetIsUnique();
+  bool         GetIsLimited();
+  Modifiers    GetModifier();
+  Restrictions GetRestriction();
 
   void Enable();
   void Disable();
@@ -46,25 +53,27 @@ class Upgrade {
   void Dump();
 
  private:
-  std::string name;
-  std::string nameShort;
-  std::string nameXws;
-  Upg         type;
-  int8_t      cost;
-  bool        isUnique;
-  bool        isLimited;
-  Modifiers   modifier;
+  std::string  name;
+  std::string  nameShort;
+  std::string  nameXws;
+  Upg          type;
+  int8_t       cost;
+  bool         isUnique;
+  bool         isLimited;
+  Modifiers    modifier;
+  Restrictions restriction;
 
   bool isEnabled;
 
   static std::list<Upgrade> upgrades;
 
-  Upgrade(std::string n,
-	  std::string ns,
-	  std::string nx,
-	  Upg         typ,
-	  int8_t      cst,
-	  bool        uni,
-	  bool        lim,
-	  Modifiers   um);
+  Upgrade(std::string  n,
+	  std::string  ns,
+	  std::string  nx,
+	  Upg          typ,
+	  int8_t       cst,
+	  bool         uni,
+	  bool         lim,
+	  Modifiers    um,
+	  Restrictions rest);
 };
