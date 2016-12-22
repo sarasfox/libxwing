@@ -72,7 +72,6 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Trick Shot",                   "Trick Shot",       "trickshot",                  Upg::Elite,             0, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Expertise",                    "Expertise",        "expertise",                  Upg::Elite,             4, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Swarm Leader",                 "Swarm Leader",     "swarmleader",                Upg::Elite,             3, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
-  { "Snap Shot",                    "Snap Shot",        "snapshot",                   Upg::Elite,             2, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "A Score to Settle",            "Score to Settle",  "ascoretosettle",             Upg::Elite,             0, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
 
   { "R2-D2",                        "R2-D2",            "r2d2",                       Upg::Astromech,         4, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
@@ -301,6 +300,5 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Primed Thrusters",             "Primed Thristers", "primedthrusters",            Upg::Tech,              1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Targeting Synchronizer",       "Targeting Sync",   "targetingsynchronizer",      Upg::Tech,              3, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Hyperwave Comm Scanner",       "HW Comm Scanner",  "hyperwavecommscanner",       Upg::Tech,              1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
-  { "Primed Thrusters",             "Primed Thrusters", "primedthrusters",            Upg::Tech,              1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
 
 };
