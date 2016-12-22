@@ -11,6 +11,7 @@ static UModifier UNone = [](const Pilot&) { return std::vector<Upg>(); };
 #define S(x)  [](Pilot p) { return x;}
 
 #define cTIX1 [](Pilot p) {for(Upgrade u : p.GetAppliedUpgrades()){ if(u.GetType()==Upg::System){ if(u.GetCost()<=4){return 0-u.GetCost();}else{return -4;} }} return 0;}
+#define hSCYK [](Pilot p) { return 1;}
 
 #define aBOSL [](Pilot p) { return Act::SLAM;}
 #define aENUP [](Pilot p) { return Act::Boost;}
@@ -196,7 +197,7 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Dauntless",                    "Dauntless",        "dauntless",                  Upg::Title,             2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "BTL-A4 Y-Wing",                "BTL-A4",           "btla4ywing",                 Upg::Title,             0, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Andrasta",                     "Andrasta",         "andrasta",                   Upg::Title,             0, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, uANDR, UNone } },
-  { "\"Heavy Scyk\" Interceptor",   "Heavy Scyk",       "heavyscykinterceptor",       Upg::Title,             2, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
+  { "\"Heavy Scyk\" Interceptor",   "Heavy Scyk",       "heavyscykinterceptor",       Upg::Title,             2, false, false, { SNone, SNone, SNone, hSCYK, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "Virago",                       "Virago",           "virago",                     Upg::Title,             1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, uVIRA, UNone } },
   { "IG-2000",                      "IG-2000",          "ig2000",                     Upg::Title,             0, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone } },
   { "TIE/x1",                       "TIE/x1",           "tiex1",                      Upg::Title,             0, false, false, { SNone, SNone, SNone, SNone, SNone, cTIX1, ANone, ANone, uTIX1, UNone } },
