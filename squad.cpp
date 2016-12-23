@@ -14,14 +14,14 @@ Squad::Squad(std::string xwsFile) {
 
   this->name        = root.get("name", "").asString();
   this->description = root.get("listdesc", "").asString();
-  this->faction     = root.get("faction", "").asString();
+  this->faction     = StringToFaction(root.get("faction", "").asString());
 
   for(int i=0; i<root["pilots"].size(); i++) {
     Json::Value jsonPilot = root["pilots"][i];
 
     std::string pilotname = jsonPilot.get("name", "").asString();
     std::string shipname = jsonPilot.get("ship", "").asString();
-    Pilot p = Pilot::GetPilot(pilotname, this->faction, shipname);
+    Pilot p = Pilot::GetPilot(pilotname, FactionToString(this->faction), shipname);
 
     Json::Value jsu = jsonPilot["upgrades"];
     for(Json::ValueIterator iCat = jsu.begin(); iCat != jsu.end() ; iCat++ ) {
@@ -37,15 +37,53 @@ Squad::Squad(std::string xwsFile) {
   }
 }
 
-std::string         Squad::GetName()   { return this->name; }
-std::vector<Pilot>& Squad::GetPilots() { return this->pilots; }
+
+
+bool Squad::Verify() {
+  bool ret = true;
+  int cost = 0;
+  for(Pilot &p : this->GetPilots()) {
+    cost += p.GetModCost();
+    // check faction
+    if(p.GetFaction() != this->GetFaction()) {
+      printf("ERROR: Squad is %s but pilot '%s' is %s\n",
+	     FactionToString(this->GetFaction()).c_str(), p.GetPilotName().c_str(), FactionToString(p.GetFaction()).c_str());
+      ret = false;
+    }
+
+    // check upgrades
+    std::vector<Upg> openSlots = p.GetModPossibleUpgrades();
+    for(Upgrade &u : p.GetAppliedUpgrades()) {
+      if(std::find(openSlots.begin(), openSlots.end(), u.GetType()) == openSlots.end()) {
+	printf("ERROR: No %s slot for upgrade '%s'\n", UpgToString(u.GetType()).c_str(), u.GetUpgradeName().c_str());
+	ret = false;
+      }
+      //if(u.
+    }
+
+  }
+
+  // check cost
+  if(cost > 100) {
+    printf("ERROR: Squad cost is %d\n", cost);
+    ret = false;
+  }
+  return ret;
+}
+
+
+
+std::string         Squad::GetName()        { return this->name; }
+std::string         Squad::GetDescription() { return this->description; }
+Faction             Squad::GetFaction()     { return this->faction; }
+std::vector<Pilot>& Squad::GetPilots()      { return this->pilots; }
 
 void Squad::Dump() {
   printf("DUMP\n");
   bool fancy = true;
   if(fancy) {
     //              |
-    printf("\e[1;37m\"%s\" [%s]\n", this->name.c_str(), this->faction.c_str());
+    printf("\e[1;37m\"%s\" [%s]\n", this->name.c_str(), FactionToString(this->faction).c_str());
     if(!this->description.empty()) {
       printf("%s\n", this->description.c_str());
     }
@@ -54,7 +92,7 @@ void Squad::Dump() {
   else {
     printf("Name:        '%s'\n", this->name.c_str());
     printf("Description: '%s'\n", this->description.c_str());
-    printf("Faction:     %s\n", this->faction.c_str());
+    printf("Faction:     %s\n",   FactionToString(this->faction).c_str());
   }
   for(auto p : this->pilots) {
     printf("\n");
