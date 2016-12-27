@@ -1,5 +1,6 @@
 #include "squad.h"
 #include "./json/json.h"
+#include <algorithm>
 #include <fstream>
 
 Squad::Squad(std::string xwsFile) {
