@@ -17,6 +17,7 @@ public:
   static void SanityCheck();
 
   Faction     GetFaction();
+  BaseSize    GetBaseSize();
   std::string GetPilotName();
   std::string GetPilotNameShort();
   std::string GetPilotNameXws();
@@ -64,6 +65,7 @@ public:
 
 private:
   Faction faction;
+  BaseSize baseSize;
   std::string pilotName;
   std::string pilotNameShort;
   std::string pilotNameXws;
@@ -88,6 +90,7 @@ private:
   static std::list<Pilot> pilots;
 
   Pilot(Faction     fac,
+	BaseSize    bs,
 	std::string name,
 	std::string snam,
 	std::string xnam,
