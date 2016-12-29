@@ -28,6 +28,7 @@ static UModifier UNone = [](const Pilot&) { return std::vector<Upg>();};
 #define uaTIS [](Pilot p) { return std::vector<Upg>{Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb};}
 #define urTIS [](Pilot p) { return std::vector<Upg>{Upg::Crew, Upg::Crew};}
 #define uSCOM [](Pilot p) { return std::vector<Upg>{Upg::Illicit, Upg::Modification};}
+#define uSCYK [](Pilot p) { return std::vector<Upg>{Upg::Cannon,Upg::Torpedo,Upg::Missile};}
 #define uTIX1 [](Pilot p) { return std::vector<Upg>{Upg::System};}
 #define uTIX7 [](Pilot p) { return std::vector<Upg>{Upg::Cannon,Upg::Missile};}
 #define uVIRA [](Pilot p) { return std::vector<Upg>{Upg::System,Upg::Illicit};}
@@ -107,6 +108,27 @@ static RestrictionCheck AT() {
   };
 }
 
+static RestrictionCheck SCYK() {
+  return [](Pilot p) {
+    bool ret = true;
+    if(p.GetShipNameXws() != "m3a") {
+      printf("RESTRICTION ERROR - Ship: Requires M3-A but played on %s\n", p.GetShipNameXws().c_str());
+      ret = false;
+    }
+
+    int c = 0;
+    for(Upgrade u : p.GetAppliedUpgrades()) {
+      if(u.GetType() == Upg::Cannon)  { c++; }
+      if(u.GetType() == Upg::Torpedo) { c++; }
+      if(u.GetType() == Upg::Missile) { c++; }
+    }
+    if(c > 1) {
+      printf("RESTRICTION ERROR - Upgrade: Allows Cannon, Torpedo, or Missile but multiple were added\n");
+    }
+
+    return ret;
+  };
+}
 
 
 std::list<Upgrade> Upgrade::upgrades = {
@@ -228,7 +250,6 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Bombardier",                   "Bombardier",       "bombardier",                 Upg::Crew,              {Upg::Crew},              1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   RNone) },
   { "Agent Kallus",                 "Agent Kallus",     "agentkallus",                Upg::Crew,              {Upg::Crew},              2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Empire, BaseSize::All,   RNone) },
   { "Rear Admiral Chiraneau",       "RADM Chiraneau",   "rearadmiralchiraneau",       Upg::Crew,              {Upg::Crew},              3, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Empire, BaseSize::All,   RNone) },
-  //{ "Construction Droid",           "Const Droid",      "constructiondroid",          Upg::Crew,              {Upg::Crew},              3, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All, BaseSize::All, RNone) },
   { "\"Chopper\"",                  "Chopper",          "chopper",                    Upg::Crew,              {Upg::Crew},              0, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Rebel,  BaseSize::All,   RNone) },
   { "\"Zeb\" Orrelios",             "Zeb",              "zeborrelios",                Upg::Crew,              {Upg::Crew},              1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Rebel,  BaseSize::All,   RNone) },
   { "Ezra Bridger",                 "Ezra",             "ezrabridger",                Upg::Crew,              {Upg::Crew},              3, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Rebel,  BaseSize::All,   RNone) },
@@ -271,7 +292,7 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Dauntless",                    "Dauntless",        "dauntless",                  Upg::Title,             {Upg::Title},             2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   Ship("vt49")) },
   { "BTL-A4 Y-Wing",                "BTL-A4",           "btla4ywing",                 Upg::Title,             {Upg::Title},             0, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   Ship("ywing")) },
   { "Andrasta",                     "Andrasta",         "andrasta",                   Upg::Title,             {Upg::Title},             0, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, uANDR, UNone }, RC(Faction::All,    BaseSize::All,   Ship("firespray31")) },
-  { "\"Heavy Scyk\" Interceptor",   "Heavy Scyk",       "heavyscykinterceptor",       Upg::Title,             {Upg::Title},             2, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   Ship("m3a")) }, // <-- crazy action modifier
+  { "\"Heavy Scyk\" Interceptor",   "Heavy Scyk",       "heavyscykinterceptor",       Upg::Title,             {Upg::Title},             2, false, false, { SNone, SNone, SNone,  S(1), SNone, SNone, ANone, ANone, uSCYK, UNone }, RC(Faction::All,    BaseSize::All,   SCYK()) },
   { "Virago",                       "Virago",           "virago",                     Upg::Title,             {Upg::Title},             1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, uVIRA, UNone }, RC(Faction::All,    BaseSize::All,   Ship("starviper")) },
   { "IG-2000",                      "IG-2000",          "ig2000",                     Upg::Title,             {Upg::Title},             0, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   Ship("aggressor")) },
   { "TIE/x1",                       "TIE/x1",           "tiex1",                      Upg::Title,             {Upg::Title},             0, false, false, { SNone, SNone, SNone, SNone, SNone, cTIX1, ANone, ANone, uTIX1, UNone }, RC(Faction::All,    BaseSize::All,   Ship("tieadvanced")) },
