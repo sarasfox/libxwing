@@ -3,7 +3,6 @@
 #include "pilot.h"
 #include <list>
 
-
 static SModifier SNone = [](const Pilot&) { return 0;};
 static AModifier ANone = [](const Pilot&) { return Act::None;};
 static UModifier UNone = [](const Pilot&) { return std::vector<Upg>();};
@@ -38,18 +37,18 @@ static RestrictionCheck RNone = [](Pilot p) { return true;};
 static RestrictionCheck RC(Faction f, BaseSize b, RestrictionCheck other) {
   return [f, b, other](Pilot p) {
     bool ret = true;
-    if(f != p.GetFaction()) {
-      printf("RESTRICTION ERROR - Faction: Requires %s but played on %s\n", FactionToString(f).c_str(), FactionToString(p.GetFaction()).c_str());
+    if((f & p.GetFaction()) != p.GetFaction()) {
+      printf("RESTRICTION ERRORx - Faction: Requires %s but played on %s\n", FactionToString(f).c_str(), FactionToString(p.GetFaction()).c_str());
       ret = false;
     }
-    if(b != p.GetBaseSize()) {
+    if((b & p.GetBaseSize()) != p.GetBaseSize()) {
       printf("RESTRICTION ERROR - Base: Requires %s but played on %s\n", BaseSizeToString(b).c_str(), BaseSizeToString(b).c_str());
       ret = false;
     }
     if(!other(p)) {
       ret = false;
     }
-    return true;
+    return ret;
   };
 }
 
@@ -110,8 +109,9 @@ static RestrictionCheck AT() {
 
 static RestrictionCheck SCYK() {
   return [](Pilot p) {
+    printf("SCYK\n");
     bool ret = true;
-    if(p.GetShipNameXws() != "m3a") {
+    if(p.GetShipNameXws() != "m3ainterceptor") {
       printf("RESTRICTION ERROR - Ship: Requires M3-A but played on %s\n", p.GetShipNameXws().c_str());
       ret = false;
     }
@@ -124,6 +124,7 @@ static RestrictionCheck SCYK() {
     }
     if(c > 1) {
       printf("RESTRICTION ERROR - Upgrade: Allows Cannon, Torpedo, or Missile but multiple were added\n");
+      ret = false;
     }
 
     return ret;

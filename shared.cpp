@@ -7,6 +7,10 @@ Faction operator|(Faction a, Faction b) {
   return static_cast<Faction>(static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
 }
 
+Faction operator&(Faction a, Faction b) {
+  return static_cast<Faction>(static_cast<uint32_t>(a) & static_cast<uint32_t>(b));
+}
+
 std::string FactionToString(Faction f) {
   switch(f) {
   case Faction::Empire: return "imperial";
@@ -29,6 +33,10 @@ Faction StringToFaction(std::string f) {
 // Base Size
 BaseSize operator|(BaseSize a, BaseSize b) {
   return static_cast<BaseSize>(static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
+}
+
+BaseSize operator&(BaseSize a, BaseSize b) {
+  return static_cast<BaseSize>(static_cast<uint32_t>(a) & static_cast<uint32_t>(b));
 }
 
 std::string BaseSizeToString(BaseSize bs) {

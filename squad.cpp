@@ -55,13 +55,17 @@ bool Squad::Verify() {
     // check upgrades
     std::vector<Upg> openSlots = p.GetModPossibleUpgrades();
     for(Upgrade &u : p.GetAppliedUpgrades()) {
+      // have slot
       if(std::find(openSlots.begin(), openSlots.end(), u.GetType()) == openSlots.end()) {
 	printf("ERROR: No %s slot for upgrade '%s'\n", UpgToString(u.GetType()).c_str(), u.GetUpgradeName().c_str());
 	ret = false;
       }
-      //if(u.
-    }
 
+      // check upgrade restrictions
+      if(!u.GetIsAllowed()(p)) {
+	ret = false;
+      }
+    }
   }
 
   // check cost
