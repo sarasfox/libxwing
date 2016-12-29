@@ -31,6 +31,15 @@ BaseSize operator|(BaseSize a, BaseSize b) {
   return static_cast<BaseSize>(static_cast<uint32_t>(a) | static_cast<uint32_t>(b));
 }
 
+std::string BaseSizeToString(BaseSize bs) {
+  switch(bs) {
+  case BaseSize::None:  return "none";
+  case BaseSize::Small: return "small";
+  case BaseSize::Large: return "large";
+  case BaseSize::All:   return "all";
+  default:              return "???";
+  }
+}
 
 
 // Actions

@@ -55,9 +55,9 @@ Upgrade::Upgrade(std::string      n,
 		 bool             uni,
 		 bool             lim,
 		 Modifiers        um,
-		 Restrictions     rest)
+		 RestrictionCheck isAl)
   : name(n), nameShort(ns), nameXws(nx), type(typ), slots(slts), cost(cst),
-    isUnique(uni), isLimited(lim), modifier(um), restriction(rest),
+    isUnique(uni), isLimited(lim), modifier(um), isAllowed(isAl),
     isEnabled(true) { }
 
 std::string      Upgrade::GetUpgradeName()      { return this->name; }
@@ -69,7 +69,7 @@ int8_t           Upgrade::GetCost()             { return this->cost; }
 bool             Upgrade::GetIsUnique()         { return this->isUnique; }
 bool             Upgrade::GetIsLimited()        { return this->isLimited; }
 Modifiers        Upgrade::GetModifier()         { return this->modifier; }
-Restrictions     Upgrade::GetRestriction()      { return this->restriction; }
+RestrictionCheck Upgrade::GetIsAllowed()        { return this->isAllowed; }
 
 void Upgrade::Enable()       { this->isEnabled = true; }
 void Upgrade::Disable()      { this->isEnabled = false; }

@@ -26,8 +26,8 @@ struct Modifiers {
 
 
 
-struct Restrictions {
-};
+typedef std::function<bool(const Pilot&)> RestrictionCheck;
+
 
 
 class Upgrade {
@@ -45,7 +45,7 @@ class Upgrade {
   bool             GetIsUnique();
   bool             GetIsLimited();
   Modifiers        GetModifier();
-  Restrictions     GetRestriction();
+  RestrictionCheck GetIsAllowed();
 
   void Enable();
   void Disable();
@@ -63,7 +63,7 @@ class Upgrade {
   bool             isUnique;
   bool             isLimited;
   Modifiers        modifier;
-  Restrictions     restriction;
+  RestrictionCheck isAllowed;
 
   bool isEnabled;
 
@@ -78,5 +78,5 @@ class Upgrade {
 	  bool             uni,
 	  bool             lim,
 	  Modifiers        um,
-	  Restrictions     rest);
+	  RestrictionCheck isAl);
 };

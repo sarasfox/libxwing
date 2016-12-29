@@ -27,7 +27,7 @@ enum class BaseSize {
   All   = 3
 };
 BaseSize operator|(BaseSize a, BaseSize b);
-
+std::string BaseSizeToString(BaseSize bs);
 
 
 // Actions
