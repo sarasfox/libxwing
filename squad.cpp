@@ -43,19 +43,42 @@ Squad::Squad(std::string xwsFile) {
 std::vector<std::string> Squad::Verify() {
   std::vector<std::string> ret;
   int cost = 0;
+  std::vector<std::string> uniques;
   for(Pilot &p : this->GetPilots()) {
     cost += p.GetModCost();
+
+    // unique
+    if(p.GetIsUnique()) {
+      std::string n = p.GetPilotName();
+      if(std::find(uniques.begin(), uniques.end(), n) == uniques.end()) {
+	uniques.push_back(n);
+      } else {
+	ret.push_back("Multiple uses of unique character " + n);
+      }
+    }
+
     // check faction
     if(p.GetFaction() != this->GetFaction()) {
-      ret.push_back("ERROR: Squad is " + FactionToString(this->GetFaction()) + " but pilot '" + p.GetPilotName() + "' is " + FactionToString(p.GetFaction()));
+      ret.push_back("Squad is " + FactionToString(this->GetFaction()) + " but pilot '" + p.GetPilotName() + "' is " + FactionToString(p.GetFaction()));
     }
 
     // check upgrades
     std::vector<Upg> openSlots = p.GetModPossibleUpgrades();
     for(Upgrade &u : p.GetAppliedUpgrades()) {
+
+      // unique
+      if(u.GetIsUnique()) {
+	std::string n = u.GetUpgradeName();
+	if(std::find(uniques.begin(), uniques.end(), n) == uniques.end()) {
+	  uniques.push_back(n);
+	} else {
+	  ret.push_back("Multiple uses of unique character " + n);
+	}
+      }
+
       // have slot
       if(std::find(openSlots.begin(), openSlots.end(), u.GetType()) == openSlots.end()) {
-	ret.push_back("ERROR: No " + UpgToString(u.GetType()) + " slot for upgrade '" + u.GetUpgradeName() + "'\n");
+	ret.push_back("No " + UpgToString(u.GetType()) + " slot for upgrade '" + u.GetUpgradeName() + "'\n");
       }
 
       // check upgrade restrictions
@@ -68,7 +91,7 @@ std::vector<std::string> Squad::Verify() {
 
   // check cost
   if(cost > 100) {
-    ret.push_back("ERROR: Squad cost is " + std::to_string(cost));
+    ret.push_back("Squad cost is " + std::to_string(cost));
   }
   return ret;
 }
