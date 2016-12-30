@@ -39,10 +39,10 @@ static RestrictionCheck RC(Faction f, BaseSize b, RestrictionCheck other) {
   return [f, b, other](Pilot p) {
     std::vector<std::string> ret;
     if((f & p.GetFaction()) != p.GetFaction()) {
-      ret.push_back("RESTRICTION ERROR - Faction: Requires " + FactionToString(f) + " but played on " + FactionToString(p.GetFaction()));
+      ret.push_back("Faction: Requires " + FactionToString(f) + " but played on " + FactionToString(p.GetFaction()));
     }
     if((b & p.GetBaseSize()) != p.GetBaseSize()) {
-      ret.push_back("RESTRICTION ERROR - Base: Requires " + BaseSizeToString(b) + " but played on " + BaseSizeToString(b));
+      ret.push_back("Base: Requires " + BaseSizeToString(b) + " but played on " + BaseSizeToString(b));
     }
     for(std::string s : other(p)) {
       ret.push_back(s);
@@ -55,7 +55,7 @@ static RestrictionCheck Ship(std::string sh) {
   return [sh](Pilot p) {
     std::vector<std::string> ret;
     if(p.GetShipNameXws() != sh) {
-      ret.push_back("RESTRICTION ERROR - Ship: Requires " + sh + " but played on " + p.GetShipNameXws());
+      ret.push_back("Ship: Requires " + sh + " but played on " + p.GetShipNameXws());
     }
     return ret;
   };
@@ -65,7 +65,7 @@ static RestrictionCheck TIE() {
   return [](Pilot p) {
     std::vector<std::string> ret;
     if(p.GetShipNameXws().find("tie") == std::string::npos) {
-      ret.push_back("RESTRICTION ERROR - Ship: Requires TIE but played on " + p.GetShipNameXws());
+      ret.push_back("Ship: Requires TIE but played on " + p.GetShipNameXws());
     }
     return ret;
   };
@@ -75,7 +75,7 @@ static RestrictionCheck XW() {
   return [](Pilot p) {
     std::vector<std::string> ret;
     if(p.GetShipNameXws().find("xwing") == std::string::npos) {
-      ret.push_back("RESTRICTION ERROR - Ship: Requires X-Wing but played on " + p.GetShipNameXws());
+      ret.push_back("Ship: Requires X-Wing but played on " + p.GetShipNameXws());
     }
     return ret;
   };
@@ -85,7 +85,7 @@ static RestrictionCheck YT() {
   return [](Pilot p) {
     std::vector<std::string> ret;
     if((p.GetShipNameXws() != "yt1300") && (p.GetShipNameXws() != "yt2400")) {
-      ret.push_back("RESTRICTION ERROR - Ship: Requires YT-1300 or YT-2400 but played on " + p.GetShipNameXws());
+      ret.push_back("Ship: Requires YT-1300 or YT-2400 but played on " + p.GetShipNameXws());
     }
     return ret;
   };
@@ -94,7 +94,7 @@ static RestrictionCheck AT() {
   return [](Pilot p) {
     std::vector<std::string> ret;
     if((p.GetModActions() & Act::Boost) != Act::Boost) {
-      ret.push_back("RESTRICTION ERROR - Action: Autothrusters requires Boost");
+      ret.push_back("Action: Autothrusters requires Boost");
     }
     return ret;
   };
@@ -104,7 +104,7 @@ static RestrictionCheck SCYK() {
   return [](Pilot p) {
     std::vector<std::string> ret;
     if(p.GetShipNameXws() != "m3ainterceptor") {
-      ret.push_back("RESTRICTION ERROR - Ship: Requires M3-A but played on " + p.GetShipNameXws());
+      ret.push_back("Ship: Requires M3-A but played on " + p.GetShipNameXws());
     }
     int c = 0;
     for(Upgrade u : p.GetAppliedUpgrades()) {
@@ -113,7 +113,7 @@ static RestrictionCheck SCYK() {
       if(u.GetType() == Upg::Missile) { c++; }
     }
     if(c > 1) {
-      ret.push_back("RESTRICTION ERROR - Upgrade: Allows Cannon, Torpedo, or Missile but multiple were added");
+      ret.push_back("Upgrade: Allows Cannon, Torpedo, or Missile but multiple were added");
     }
     return ret;
   };

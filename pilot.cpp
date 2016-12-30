@@ -188,6 +188,7 @@ void Pilot::ApplyUpgrade(Upgrade u) {
   this->appliedUpgrades.push_back(u);
 }
 
+#define NORMAL "\x1B[0m"
 #define GRAY   "\e[0;37m"
 #define WHITE  "\e[1;37m"
 #define BROWN  "\e[0;33m"

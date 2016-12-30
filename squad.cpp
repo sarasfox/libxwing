@@ -68,7 +68,7 @@ std::vector<std::string> Squad::Verify() {
 
   // check cost
   if(cost > 100) {
-    printf("ERROR: Squad cost is %d\n", cost);
+    ret.push_back("ERROR: Squad cost is " + std::to_string(cost));
   }
   return ret;
 }
