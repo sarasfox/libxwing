@@ -33,20 +33,19 @@ static UModifier UNone = [](const Pilot&) { return std::vector<Upg>();};
 #define uVIRA [](Pilot p) { return std::vector<Upg>{Upg::System,Upg::Illicit};}
 #define uSAMP [](Pilot p) { return std::vector<Upg>{Upg::Crew,Upg::Illicit};}
 
-static RestrictionCheck RNone = [](Pilot p) { return true;};
+static RestrictionCheck RNone = [](Pilot p) { return std::vector<std::string>();};
+
 static RestrictionCheck RC(Faction f, BaseSize b, RestrictionCheck other) {
   return [f, b, other](Pilot p) {
-    bool ret = true;
+    std::vector<std::string> ret;
     if((f & p.GetFaction()) != p.GetFaction()) {
-      printf("RESTRICTION ERRORx - Faction: Requires %s but played on %s\n", FactionToString(f).c_str(), FactionToString(p.GetFaction()).c_str());
-      ret = false;
+      ret.push_back("RESTRICTION ERROR - Faction: Requires " + FactionToString(f) + " but played on " + FactionToString(p.GetFaction()));
     }
     if((b & p.GetBaseSize()) != p.GetBaseSize()) {
-      printf("RESTRICTION ERROR - Base: Requires %s but played on %s\n", BaseSizeToString(b).c_str(), BaseSizeToString(b).c_str());
-      ret = false;
+      ret.push_back("RESTRICTION ERROR - Base: Requires " + BaseSizeToString(b) + " but played on " + BaseSizeToString(b));
     }
-    if(!other(p)) {
-      ret = false;
+    for(std::string s : other(p)) {
+      ret.push_back(s);
     }
     return ret;
   };
@@ -54,68 +53,59 @@ static RestrictionCheck RC(Faction f, BaseSize b, RestrictionCheck other) {
 
 static RestrictionCheck Ship(std::string sh) {
   return [sh](Pilot p) {
-    if(p.GetShipNameXws() == sh) {
-      return true;
-    } else {
-      printf("RESTRICTION ERROR - Ship: Requires %s but played on %s\n", sh.c_str(), p.GetShipNameXws().c_str());
-      return false;
+    std::vector<std::string> ret;
+    if(p.GetShipNameXws() != sh) {
+      ret.push_back("RESTRICTION ERROR - Ship: Requires " + sh + " but played on " + p.GetShipNameXws());
     }
+    return ret;
   };
 }
 
 static RestrictionCheck TIE() {
   return [](Pilot p) {
-    if(p.GetShipNameXws().find("tie") != std::string::npos) {
-      return true;
-    } else {
-      printf("RESTRICTION ERROR - Ship: Requires TIE but played on %s\n", p.GetShipNameXws().c_str());
-      return false;
+    std::vector<std::string> ret;
+    if(p.GetShipNameXws().find("tie") == std::string::npos) {
+      ret.push_back("RESTRICTION ERROR - Ship: Requires TIE but played on " + p.GetShipNameXws());
     }
+    return ret;
   };
 }
 
 static RestrictionCheck XW() {
   return [](Pilot p) {
-    if(p.GetShipNameXws().find("xwing") != std::string::npos) {
-      return true;
-    } else {
-      printf("RESTRICTION ERROR - Ship: Requires X-Wing but played on %s\n", p.GetShipNameXws().c_str());
-      return false;
+    std::vector<std::string> ret;
+    if(p.GetShipNameXws().find("xwing") == std::string::npos) {
+      ret.push_back("RESTRICTION ERROR - Ship: Requires X-Wing but played on " + p.GetShipNameXws());
     }
+    return ret;
   };
 }
 
 static RestrictionCheck YT() {
   return [](Pilot p) {
-    if((p.GetShipNameXws() == "yt1300") || (p.GetShipNameXws() == "yt2400")) {
-      return true;
-    } else {
-      printf("RESTRICTION ERROR - Ship: Requires YT-1300 or YT-2400 but played on %s\n", p.GetShipNameXws().c_str());
-      return false;
+    std::vector<std::string> ret;
+    if((p.GetShipNameXws() != "yt1300") && (p.GetShipNameXws() != "yt2400")) {
+      ret.push_back("RESTRICTION ERROR - Ship: Requires YT-1300 or YT-2400 but played on " + p.GetShipNameXws());
     }
+    return ret;
   };
 }
-
 static RestrictionCheck AT() {
   return [](Pilot p) {
-    if((p.GetModActions() & Act::Boost) == Act::Boost) {
-      return true;
-    } else {
-      printf("RESTRICTION ERROR - Action: Autothrusters requires Boost\n");
-      return false;
+    std::vector<std::string> ret;
+    if((p.GetModActions() & Act::Boost) != Act::Boost) {
+      ret.push_back("RESTRICTION ERROR - Action: Autothrusters requires Boost");
     }
+    return ret;
   };
 }
 
 static RestrictionCheck SCYK() {
   return [](Pilot p) {
-    printf("SCYK\n");
-    bool ret = true;
+    std::vector<std::string> ret;
     if(p.GetShipNameXws() != "m3ainterceptor") {
-      printf("RESTRICTION ERROR - Ship: Requires M3-A but played on %s\n", p.GetShipNameXws().c_str());
-      ret = false;
+      ret.push_back("RESTRICTION ERROR - Ship: Requires M3-A but played on " + p.GetShipNameXws());
     }
-
     int c = 0;
     for(Upgrade u : p.GetAppliedUpgrades()) {
       if(u.GetType() == Upg::Cannon)  { c++; }
@@ -123,10 +113,8 @@ static RestrictionCheck SCYK() {
       if(u.GetType() == Upg::Missile) { c++; }
     }
     if(c > 1) {
-      printf("RESTRICTION ERROR - Upgrade: Allows Cannon, Torpedo, or Missile but multiple were added\n");
-      ret = false;
+      ret.push_back("RESTRICTION ERROR - Upgrade: Allows Cannon, Torpedo, or Missile but multiple were added");
     }
-
     return ret;
   };
 }

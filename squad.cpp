@@ -40,16 +40,14 @@ Squad::Squad(std::string xwsFile) {
 
 
 
-bool Squad::Verify() {
-  bool ret = true;
+std::vector<std::string> Squad::Verify() {
+  std::vector<std::string> ret;
   int cost = 0;
   for(Pilot &p : this->GetPilots()) {
     cost += p.GetModCost();
     // check faction
     if(p.GetFaction() != this->GetFaction()) {
-      printf("ERROR: Squad is %s but pilot '%s' is %s\n",
-	     FactionToString(this->GetFaction()).c_str(), p.GetPilotName().c_str(), FactionToString(p.GetFaction()).c_str());
-      ret = false;
+      ret.push_back("ERROR: Squad is " + FactionToString(this->GetFaction()) + " but pilot '" + p.GetPilotName() + "' is " + FactionToString(p.GetFaction()));
     }
 
     // check upgrades
@@ -57,13 +55,13 @@ bool Squad::Verify() {
     for(Upgrade &u : p.GetAppliedUpgrades()) {
       // have slot
       if(std::find(openSlots.begin(), openSlots.end(), u.GetType()) == openSlots.end()) {
-	printf("ERROR: No %s slot for upgrade '%s'\n", UpgToString(u.GetType()).c_str(), u.GetUpgradeName().c_str());
-	ret = false;
+	ret.push_back("ERROR: No " + UpgToString(u.GetType()) + " slot for upgrade '" + u.GetUpgradeName() + "'\n");
       }
 
       // check upgrade restrictions
-      if(!u.GetIsAllowed()(p)) {
-	ret = false;
+      auto errs = u.GetRestrictionCheck()(p);
+      for(std::string e : errs) {
+	ret.push_back(e);
       }
     }
   }
@@ -71,7 +69,6 @@ bool Squad::Verify() {
   // check cost
   if(cost > 100) {
     printf("ERROR: Squad cost is %d\n", cost);
-    ret = false;
   }
   return ret;
 }

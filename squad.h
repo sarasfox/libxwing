@@ -7,7 +7,7 @@
 class Squad {
  public:
   Squad(std::string xwsFile);
-  bool Verify();
+  std::vector<std::string> Verify();
   std::string GetName();
   std::string GetDescription();
   Faction     GetFaction();
