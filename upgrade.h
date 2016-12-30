@@ -24,6 +24,12 @@ struct Modifiers {
   UModifier remUpg;
 };
 
+
+
+typedef std::function<std::vector<std::string>(const Pilot&)> RestrictionCheck;
+
+
+
 class Upgrade {
  public:
   static Upgrade GetUpgrade(std::string category, std::string name);
@@ -33,11 +39,13 @@ class Upgrade {
   std::string GetUpgradeNameShort();
   std::string GetUpgradeNameXws();
 
-  Upg        GetType();
-  int8_t     GetCost();
-  bool       GetIsUnique();
-  bool       GetIsLimited();
-  Modifiers GetModifier();
+  Upg              GetType();
+  std::vector<Upg> GetSlots();
+  int8_t           GetCost();
+  bool             GetIsUnique();
+  bool             GetIsLimited();
+  Modifiers        GetModifier();
+  RestrictionCheck GetRestrictionCheck();
 
   void Enable();
   void Disable();
@@ -46,25 +54,29 @@ class Upgrade {
   void Dump();
 
  private:
-  std::string name;
-  std::string nameShort;
-  std::string nameXws;
-  Upg         type;
-  int8_t      cost;
-  bool        isUnique;
-  bool        isLimited;
-  Modifiers   modifier;
+  std::string      name;
+  std::string      nameShort;
+  std::string      nameXws;
+  Upg              type;
+  std::vector<Upg> slots;
+  int8_t           cost;
+  bool             isUnique;
+  bool             isLimited;
+  Modifiers        modifier;
+  RestrictionCheck restrictionCheck;
 
   bool isEnabled;
 
   static std::list<Upgrade> upgrades;
 
-  Upgrade(std::string n,
-	  std::string ns,
-	  std::string nx,
-	  Upg         typ,
-	  int8_t      cst,
-	  bool        uni,
-	  bool        lim,
-	  Modifiers   um);
+  Upgrade(std::string      n,
+	  std::string      ns,
+	  std::string      nx,
+	  Upg              typ,
+	  std::vector<Upg> slt,
+	  int8_t           cst,
+	  bool             uni,
+	  bool             lim,
+	  Modifiers        um,
+	  RestrictionCheck rc);
 };

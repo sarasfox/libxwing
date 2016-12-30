@@ -47,6 +47,7 @@ void Pilot::SanityCheck() {
 
 
 Pilot::Pilot(Faction     fact,
+	     BaseSize    bs,
 	     std::string name,
 	     std::string snam,
 	     std::string xnam,
@@ -62,7 +63,7 @@ Pilot::Pilot(Faction     fact,
 	     int8_t      cs,
 	     Act         ac,
 	     std::vector<Upg> up)
-  : faction(fact),
+  : faction(fact), baseSize(bs),
     pilotName(name), pilotNameShort(snam), pilotNameXws(xnam),
     shipName(ship), shipNameXws(xshi), shipGlyph(gly),
     isUnique(uni), skill(ps),
@@ -71,6 +72,7 @@ Pilot::Pilot(Faction     fact,
     isEnabled(true), shieldHits(0), hullHits(0) { }
 
 Faction     Pilot::GetFaction()        { return this->faction; }
+BaseSize    Pilot::GetBaseSize()       { return this->baseSize; }
 std::string Pilot::GetPilotName()      { return this->pilotName; }
 std::string Pilot::GetPilotNameShort() { return this->pilotNameShort; }
 std::string Pilot::GetPilotNameXws()   { return this->pilotNameXws; }
@@ -186,6 +188,7 @@ void Pilot::ApplyUpgrade(Upgrade u) {
   this->appliedUpgrades.push_back(u);
 }
 
+#define NORMAL "\x1B[0m"
 #define GRAY   "\e[0;37m"
 #define WHITE  "\e[1;37m"
 #define BROWN  "\e[0;33m"

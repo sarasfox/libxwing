@@ -7,7 +7,10 @@
 class Squad {
  public:
   Squad(std::string xwsFile);
+  std::vector<std::string> Verify();
   std::string GetName();
+  std::string GetDescription();
+  Faction     GetFaction();
   std::vector<Pilot>& GetPilots();
 
   void Dump();
@@ -15,6 +18,6 @@ class Squad {
  private:
   std::string name;
   std::string description;
-  std::string faction;
+  Faction faction;
   std::vector<Pilot> pilots;
 };

@@ -46,26 +46,30 @@ void Upgrade::SanityCheck() {
 
 
 
-Upgrade::Upgrade(std::string n,
-		 std::string ns,
-		 std::string nx,
-		 Upg         typ,
-		 int8_t      cst,
-		 bool        uni,
-		 bool        lim,
-		 Modifiers   um)
-  : name(n), nameShort(ns), nameXws(nx), type(typ),
-    cost(cst), isUnique(uni), isLimited(lim), modifier(um), isEnabled(true) {
-}
+Upgrade::Upgrade(std::string      n,
+		 std::string      ns,
+		 std::string      nx,
+		 Upg              typ,
+		 std::vector<Upg> slts,
+		 int8_t           cst,
+		 bool             uni,
+		 bool             lim,
+		 Modifiers        um,
+		 RestrictionCheck rc)
+  : name(n), nameShort(ns), nameXws(nx), type(typ), slots(slts), cost(cst),
+    isUnique(uni), isLimited(lim), modifier(um), restrictionCheck(rc),
+    isEnabled(true) { }
 
-std::string Upgrade::GetUpgradeName()      { return this->name; }
-std::string Upgrade::GetUpgradeNameShort() { return this->nameShort; }
-std::string Upgrade::GetUpgradeNameXws()   { return this->nameXws; }
-Upg         Upgrade::GetType()             { return this->type; }
-int8_t      Upgrade::GetCost()             { return this->cost; }
-bool        Upgrade::GetIsUnique()         { return this->isUnique; }
-bool        Upgrade::GetIsLimited()        { return this->isLimited; }
-Modifiers   Upgrade::GetModifier()         { return this->modifier; }
+std::string      Upgrade::GetUpgradeName()      { return this->name; }
+std::string      Upgrade::GetUpgradeNameShort() { return this->nameShort; }
+std::string      Upgrade::GetUpgradeNameXws()   { return this->nameXws; }
+Upg              Upgrade::GetType()             { return this->type; }
+std::vector<Upg> Upgrade::GetSlots()            { return this->slots; }
+int8_t           Upgrade::GetCost()             { return this->cost; }
+bool             Upgrade::GetIsUnique()         { return this->isUnique; }
+bool             Upgrade::GetIsLimited()        { return this->isLimited; }
+Modifiers        Upgrade::GetModifier()         { return this->modifier; }
+RestrictionCheck Upgrade::GetRestrictionCheck() { return this->restrictionCheck; }
 
 void Upgrade::Enable()       { this->isEnabled = true; }
 void Upgrade::Disable()      { this->isEnabled = false; }

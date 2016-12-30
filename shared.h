@@ -14,6 +14,7 @@ enum class Faction {
   All    = 7
 };
 Faction operator|(Faction a, Faction b);
+Faction operator&(Faction a, Faction b);
 std::string FactionToString(Faction f);
 Faction     StringToFaction(std::string f);
 
@@ -27,7 +28,8 @@ enum class BaseSize {
   All   = 3
 };
 BaseSize operator|(BaseSize a, BaseSize b);
-
+BaseSize operator&(BaseSize a, BaseSize b);
+std::string BaseSizeToString(BaseSize bs);
 
 
 // Actions
