@@ -63,6 +63,7 @@ std::vector<std::string> Squad::Verify() {
     }
 
     // check upgrades
+    std::vector<std::string> limiteds; 
     std::vector<Upg> openSlots = p.GetModPossibleUpgrades();
     for(Upgrade &u : p.GetAppliedUpgrades()) {
 
@@ -73,6 +74,16 @@ std::vector<std::string> Squad::Verify() {
 	  uniques.push_back(n);
 	} else {
 	  ret.push_back("Multiple uses of unique character " + n);
+	}
+      }
+
+      // limited
+      if(u.GetIsLimited()) {
+	std::string n = u.GetUpgradeName();
+	if(std::find(limiteds.begin(), limiteds.end(), n) == limiteds.end()) {
+	  limiteds.push_back(n);
+	} else {
+	  ret.push_back("Multiple uses of limited upgrade " + n + " on " + p.GetPilotName());
 	}
       }
 
