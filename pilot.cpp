@@ -204,8 +204,42 @@ void Pilot::Dump() {
 	   WHITE,GRAY,this->GetModCost(),WHITE, this->pilotName.c_str(), this->shipName.c_str());
     
     //      C |sk C    C |attC /C |agi  /C |hulC /C |sh C
-    printf("%s%hhu%s - %s%hhd%s/%s%hhd%s/%s%hhd%s/%s%hhd%s - ",
-	   BROWN, this->skill, WHITE, RED,this->attack,WHITE,GREEN,this->agility,WHITE,YELLOW,this->hull,WHITE,BLUE,this->shield,WHITE);
+
+    // skill
+    printf("%s%hhu", BROWN, this->GetNatSkill());
+    if(this->GetNatSkill() != this->GetModSkill()) {
+      printf("(%hhu)", this->GetModSkill());
+    }
+    printf("%s - ", WHITE);
+
+    // attack
+    printf("%s%hhu", RED, this->GetNatAttack());
+    if(this->GetNatAttack() != this->GetModAttack()) {
+      printf("(%hhu)", this->GetModAttack());
+    }
+    printf("%s/", WHITE);
+
+    // agility
+    printf("%s%hhu", GREEN, this->GetNatAgility());
+    if(this->GetNatAgility() != this->GetModAgility()) {
+      printf("(%hhu)", this->GetModAgility());
+    }
+    printf("%s/", WHITE);
+
+    // hull
+    printf("%s%hhu", YELLOW, this->GetNatHull());
+    if(this->GetNatHull() != this->GetModHull()) {
+      printf("(%hhu)", this->GetModHull());
+    }
+    printf("%s/", WHITE);
+
+    // shield
+    printf("%s%hhu", BLUE, this->GetNatShield());
+    if(this->GetNatShield() != this->GetModShield()) {
+      printf("(%hhu)", this->GetModShield());
+    }
+    printf("%s - ", WHITE);
+
     ForEachAction(this->GetModActions(), [](Act a) {printf("[%s]", ActToString(a).c_str());});
     printf(" - ");
     for(Upg u : this->GetModPossibleUpgrades()) {

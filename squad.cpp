@@ -115,7 +115,6 @@ Faction             Squad::GetFaction()     { return this->faction; }
 std::vector<Pilot>& Squad::GetPilots()      { return this->pilots; }
 
 void Squad::Dump() {
-  printf("DUMP\n");
   bool fancy = true;
   if(fancy) {
     //              |
