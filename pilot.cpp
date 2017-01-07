@@ -138,10 +138,8 @@ int8_t Pilot::GetModShield() {
 int8_t Pilot::GetModCost() {
   int8_t cost = this->cost;
   for(Upgrade u : this->appliedUpgrades) {
-    if(u.GetIsEnabled()) {
-      cost += u.GetCost();
-      cost += u.GetModifier().cost(*this);
-    }
+    cost += u.GetCost();
+    cost += u.GetModifier().cost(*this);
   }
   return cost;
 }
