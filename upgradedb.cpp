@@ -28,11 +28,12 @@ static UModifier UNone = [](const Pilot&) { return std::vector<Upg>();};
 #define uaTIS [](Pilot p) { return std::vector<Upg>{Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb};}
 #define urTIS [](Pilot p) { return std::vector<Upg>{Upg::Crew, Upg::Crew};}
 #define uSCOM [](Pilot p) { return std::vector<Upg>{Upg::Illicit, Upg::Modification};}
-#define uSCYK [](Pilot p) { return std::vector<Upg>{Upg::Cannon,Upg::Torpedo,Upg::Missile};}
+#define uHSCY [](Pilot p) { return std::vector<Upg>{Upg::Cannon,Upg::Torpedo,Upg::Missile};}
 #define uTIX1 [](Pilot p) { return std::vector<Upg>{Upg::System};}
 #define uTIX7 [](Pilot p) { return std::vector<Upg>{Upg::Cannon,Upg::Missile};}
 #define uVIRA [](Pilot p) { return std::vector<Upg>{Upg::System,Upg::Illicit};}
 #define uSAMP [](Pilot p) { return std::vector<Upg>{Upg::Crew,Upg::Illicit};}
+#define uLSCY [](Pilot p) { return std::vector<Upg>{Upg::Modification};}
 
 static RestrictionCheck RNone = [](Pilot p) { return std::vector<std::string>();};
 
@@ -101,7 +102,7 @@ static RestrictionCheck AT() {
   };
 }
 
-static RestrictionCheck SCYK() {
+static RestrictionCheck HSCY() {
   return [](Pilot p) {
     std::vector<std::string> ret;
     if(p.GetShipNameXws() != "m3ainterceptor") {
@@ -115,6 +116,16 @@ static RestrictionCheck SCYK() {
     }
     if(c > 1) {
       ret.push_back("Upgrade: Allows Cannon, Torpedo, or Missile but multiple were added");
+    }
+    return ret;
+  };
+}
+
+static RestrictionCheck LSCY() {
+  return [](Pilot p) {
+    std::vector<std::string> ret;
+    if(p.GetShipNameXws() != "m3ainterceptor") {
+      ret.push_back("Ship: Requires M3-A but played on " + p.GetShipNameXws());
     }
     return ret;
   };
@@ -265,6 +276,13 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Bistan",                       "Bistan",           "bistan",                     Upg::Crew,              {Upg::Crew},              2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Rebel,  BaseSize::All,   RNone) },
   { "Bodhi Rook",                   "Bodhi Rook",       "bodhirook",                  Upg::Crew,              {Upg::Crew},              1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Rebel,  BaseSize::All,   RNone) },
   { "Inspiring Recruit",            "Insp Recruit",     "inspiringrecruit",           Upg::Crew,              {Upg::Crew},              1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Rebel,  BaseSize::All,   RNone) },
+  { "Captain Rex",                  "Capt. Rex",        "captainrex",                 Upg::Crew,              {Upg::Crew},              2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Rebel,  BaseSize::All,   RNone) },
+  { "Kylo Ren",                     "Kylo Ren",         "kyloren",                    Upg::Crew,              {Upg::Crew},              3, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Empire, BaseSize::All,   RNone) },
+  { "General Hux",                  "Gen. Hux",         "generalhux",                 Upg::Crew,              {Upg::Crew},              5, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Empire, BaseSize::All,   RNone) },
+  { "Operations Specialist",        "Ops Specialist",   "operationsspecialist",       Upg::Crew,              {Upg::Crew},              3, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Empire, BaseSize::All,   RNone) },
+  { "Unkar Plutt",                  "Unkay Plutt",      "unkarplutt",                 Upg::Crew,              {Upg::Crew},              1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Scum,   BaseSize::All,   RNone) },
+  { "BoShek",                       "BoShek",           "boshek",                     Upg::Crew,              {Upg::Crew},             99, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Scum,   BaseSize::All,   RNone) },
+  { "Cikatro Vizago",               "Vizago",           "cikatrovizago",              Upg::Crew,              {Upg::Crew},              0, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::Scum,   BaseSize::All,   RNone) }, // good luck with this one!
 
   { "Millennium Falcon",            "MF",               "millenniumfalcon",           Upg::Title,             {Upg::Title},             1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, aMFAL, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   Ship("yt1300")) },
   { "Slave 1",                      "Slave 1",          "slave1",                     Upg::Title,             {Upg::Title},             0, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   Ship("firespray31")) },
@@ -276,7 +294,7 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Dauntless",                    "Dauntless",        "dauntless",                  Upg::Title,             {Upg::Title},             2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   Ship("vt49")) },
   { "BTL-A4 Y-Wing",                "BTL-A4",           "btla4ywing",                 Upg::Title,             {Upg::Title},             0, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   Ship("ywing")) },
   { "Andrasta",                     "Andrasta",         "andrasta",                   Upg::Title,             {Upg::Title},             0, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, uANDR, UNone }, RC(Faction::All,    BaseSize::All,   Ship("firespray31")) },
-  { "\"Heavy Scyk\" Interceptor",   "Heavy Scyk",       "heavyscykinterceptor",       Upg::Title,             {Upg::Title},             2, false, false, { SNone, SNone, SNone,  S(1), SNone, SNone, ANone, ANone, uSCYK, UNone }, RC(Faction::All,    BaseSize::All,   SCYK()) },
+  { "\"Heavy Scyk\" Interceptor",   "Heavy Scyk",       "heavyscykinterceptor",       Upg::Title,             {Upg::Title},             2, false, false, { SNone, SNone, SNone,  S(1), SNone, SNone, ANone, ANone, uHSCY, UNone }, RC(Faction::All,    BaseSize::All,   HSCY()) },
   { "Virago",                       "Virago",           "virago",                     Upg::Title,             {Upg::Title},             1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, uVIRA, UNone }, RC(Faction::All,    BaseSize::All,   Ship("starviper")) },
   { "IG-2000",                      "IG-2000",          "ig2000",                     Upg::Title,             {Upg::Title},             0, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   Ship("aggressor")) },
   { "TIE/x1",                       "TIE/x1",           "tiex1",                      Upg::Title,             {Upg::Title},             0, false, false, { SNone, SNone, SNone, SNone, SNone, cTIX1, ANone, ANone, uTIX1, UNone }, RC(Faction::All,    BaseSize::All,   Ship("tieadvanced")) },
@@ -297,6 +315,9 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Millennium Falcon",            "MF (HOTR)",        "millenniumfalcon-swx57",     Upg::Title,             {Upg::Title},             1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   Ship("yt1300")) },
   { "Pivot Wing",                   "Pivot Wing",       "pivotwing",                  Upg::Title,             {Upg::Title},             0, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   Ship("uwing")) },
   { "Adaptive Ailerons",            "Adapt Ailerons",   "adaptiveailerons",           Upg::Title,             {Upg::Title},             0, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   Ship("tiestriker")) },
+  { "Sabine's Masterpiece",         "Sabine's Mpiece",  "sabinesmasterpiece",         Upg::Title,             {Upg::Title},             1, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, uSAMP, UNone }, RC(Faction::Rebel,  BaseSize::All,   Ship("tiefighter")) },
+  { "Kylo Ren's Shuttle",           "Kylo Ren's",       "kylorensshuttle",            Upg::Title,             {Upg::Title},             2, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, uSAMP, UNone }, RC(Faction::All,    BaseSize::All,   Ship("upsilonclassshuttle")) },
+  { "\"Light Scyk\" Interceptor",   "Light Scyk",       "lightscykinterceptor",       Upg::Title,             {Upg::Title},            -2, false, false, { SNone, SNone, SNone,  S(1), SNone, SNone, ANone, ANone, uLSCY, UNone }, RC(Faction::All,    BaseSize::All,   LSCY()) },
 
   { "Engine Upgrade",               "EU",               "engineupgrade",              Upg::Modification,      {Upg::Modification},      4, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, aENUP, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   RNone) },
   { "Shield Upgrade",               "SU",               "shieldupgrade",              Upg::Modification,      {Upg::Modification},      4, false, false, { SNone, SNone, SNone, SNone,  S(1), SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   RNone) },
@@ -355,7 +376,7 @@ std::list<Upgrade> Upgrade::upgrades = {
   { "Salvaged Astromech",           "Salvaged",         "salvagedastromech",          Upg::SalvagedAstromech, {Upg::SalvagedAstromech}, 2, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   RNone) },
   { "Unhinged Astromech",           "Unhinged",         "unhingedastromech",          Upg::SalvagedAstromech, {Upg::SalvagedAstromech}, 1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   RNone) },
   { "R5-P8",                        "R5-P8",            "r5p8",                       Upg::SalvagedAstromech, {Upg::SalvagedAstromech}, 3, true,  false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   RNone) },
-  { "Overclocked R4",                "Overclkd R4",      "overclockedr4",              Upg::SalvagedAstromech, {Upg::SalvagedAstromech}, 1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   RNone) },
+  { "Overclocked R4",               "Overclkd R4",      "overclockedr4",              Upg::SalvagedAstromech, {Upg::SalvagedAstromech}, 1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   RNone) },
 
   { "\"Hot Shot\" Blaster",         "Hot Shot",         "hotshotblaster",             Upg::Illicit,           {Upg::Illicit},           3, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   RNone) },
   { "Inertial Dampeners",           "Inertial Damp",    "inertialdampeners",          Upg::Illicit,           {Upg::Illicit},           1, false, false, { SNone, SNone, SNone, SNone, SNone, SNone, ANone, ANone, UNone, UNone }, RC(Faction::All,    BaseSize::All,   RNone) },
