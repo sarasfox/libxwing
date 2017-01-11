@@ -11,6 +11,37 @@ struct PilotKey {
   std::string ship;
 };
 
+enum class Bearing {
+  LTurn,
+  LBank,
+  Straight,
+  RBank,
+  RTurn,
+  KTurn,
+  Stationary,
+  LSloop,
+  RSloop,
+  LTroll,
+  RTroll
+};
+
+enum class Difficulty {
+  Green,
+  White,
+  Red
+};
+
+struct Maneuver {
+  int8_t     speed;
+  Bearing    bearing;
+  Difficulty difficulty;
+};
+
+typedef std::vector<Maneuver> Maneuvers;
+//class Maneuvers : public std::vector<Maneuver> {
+//};
+
+
 class Pilot {
 public:
   static Pilot GetPilot(std::string pilot, std::string faction, std::string ship);
@@ -24,7 +55,9 @@ public:
   std::string GetShipName();
   std::string GetShipNameXws();
   std::string GetShipGlyph();
+  Maneuvers   GetManeuvers();
   bool        GetIsUnique();
+
 
   int8_t GetNatSkill();
   int8_t GetNatAttack();
@@ -72,6 +105,7 @@ private:
   std::string shipName;
   std::string shipNameXws;
   std::string shipGlyph;
+  Maneuvers   maneuvers;
   bool   isUnique;
   int8_t skill;
   int8_t attack;
@@ -90,20 +124,21 @@ private:
   static std::list<Pilot> pilots;
 
   Pilot(Faction     fac,
-	BaseSize    bs,
-	std::string name,
-	std::string snam,
-	std::string xnam,
-	std::string ship,
-	std::string xshi,
-	std::string gly,
-	bool        uni,
-	int8_t      ps,
-	int8_t      at,
-	int8_t      ag,
-	int8_t      hu,
-	int8_t      sh,
-	int8_t      cs,
-	Act         ac,
-	std::vector<Upg> up);
+        BaseSize    bs,
+        std::string name,
+        std::string snam,
+        std::string xnam,
+        std::string ship,
+        std::string xshi,
+        std::string gly,
+        Maneuvers   man,
+        bool        uni,
+        int8_t      ps,
+        int8_t      at,
+        int8_t      ag,
+        int8_t      hu,
+        int8_t      sh,
+        int8_t      cs,
+        Act         ac,
+        std::vector<Upg> up);
 };
