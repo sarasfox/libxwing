@@ -6,6 +6,9 @@
 
 
 
+//Maneuver
+
+
 Pilot Pilot::GetPilot(std::string pilot, std::string faction, std::string ship) {
   for(Pilot &ps : Pilot::pilots) {
     if((ps.GetPilotNameXws() == pilot) && (ps.GetFaction() == StringToFaction(faction)) && (ps.GetShipNameXws() == ship)) {
@@ -47,25 +50,26 @@ void Pilot::SanityCheck() {
 
 
 Pilot::Pilot(Faction     fact,
-	     BaseSize    bs,
-	     std::string name,
-	     std::string snam,
-	     std::string xnam,
-	     std::string ship,
-	     std::string xshi,
-	     std::string gly,
-	     bool        uni,
-	     int8_t      ps,
-	     int8_t      at,
-	     int8_t      ag,
-	     int8_t      hu,
-	     int8_t      sh,
-	     int8_t      cs,
-	     Act         ac,
-	     std::vector<Upg> up)
+             BaseSize    bs,
+             std::string name,
+             std::string snam,
+             std::string xnam,
+             std::string ship,
+             std::string xshi,
+             std::string gly,
+             Maneuvers   man,
+             bool        uni,
+             int8_t      ps,
+             int8_t      at,
+             int8_t      ag,
+             int8_t      hu,
+             int8_t      sh,
+             int8_t      cs,
+             Act         ac,
+             std::vector<Upg> up)
   : faction(fact), baseSize(bs),
     pilotName(name), pilotNameShort(snam), pilotNameXws(xnam),
-    shipName(ship), shipNameXws(xshi), shipGlyph(gly),
+    shipName(ship), shipNameXws(xshi), shipGlyph(gly), maneuvers(man),
     isUnique(uni), skill(ps),
     attack(at), agility(ag), hull(hu), shield(sh), cost(cs),
     actions(ac), possibleUpgrades(up),
@@ -79,7 +83,8 @@ std::string Pilot::GetPilotNameXws()   { return this->pilotNameXws; }
 std::string Pilot::GetShipName()       { return this->shipName; }
 std::string Pilot::GetShipNameXws()    { return this->shipNameXws; }
 std::string Pilot::GetShipGlyph()      { return this->shipGlyph; }
-bool        Pilot::GetIsUnique()   { return this->isUnique; }
+Maneuvers   Pilot::GetManeuvers()      { return this->maneuvers; }
+bool        Pilot::GetIsUnique()       { return this->isUnique; }
 
 int8_t Pilot::GetNatSkill()   { return this->skill; }
 int8_t Pilot::GetNatAttack()  { return this->attack; }
@@ -186,6 +191,8 @@ void Pilot::ApplyUpgrade(Upgrade u) {
   this->appliedUpgrades.push_back(u);
 }
 
+
+
 #define NORMAL "\x1B[0m"
 #define GRAY   "\e[0;37m"
 #define WHITE  "\e[1;37m"
@@ -194,6 +201,44 @@ void Pilot::ApplyUpgrade(Upgrade u) {
 #define GREEN  "\e[1;32m"
 #define YELLOW "\e[1;33m"
 #define BLUE   "\e[1;34m"
+
+
+bool FindManeuver(Maneuvers maneuvers, uint8_t speed, Bearing bearing, Maneuver &maneuver) {
+  for(auto m : maneuvers) {
+    if((m.speed == speed) && (m.bearing == bearing)) {
+      maneuver = m;
+      return true;
+    }
+  }
+  return false;
+}
+
+std::string GetDifficultyColor(Difficulty d) {
+  switch(d) {
+  case Difficulty::Green: return GREEN;
+  case Difficulty::White: return WHITE;
+  case Difficulty::Red:   return RED;
+  }
+}
+
+std::string GetBearingSymbol(Bearing b) {
+  switch(b) {
+  case Bearing::LTurn:      return "↰";
+  case Bearing::LBank:      return "↖";
+  case Bearing::Straight:   return "↑";
+  case Bearing::Stationary: return "■";
+  case Bearing::RBank:      return "↗";
+  case Bearing::RTurn:      return "↱";
+  case Bearing::KTurn:      return "K";
+  case Bearing::LSloop:     return "↖";
+  case Bearing::RSloop:     return "↗";
+  case Bearing::LTroll:     return "↰";
+  case Bearing::RTroll:     return "↱";
+  default:                  return "?";
+  }
+}
+
+
 void Pilot::Dump() {
   bool fancy = true;
   if(fancy) {
@@ -247,7 +292,37 @@ void Pilot::Dump() {
     for(auto u : this->GetAppliedUpgrades()) {
       printf(" [%s]", u.GetUpgradeName().c_str());
     }
-    printf("\n");
+    printf(NORMAL"\n");
+
+    // draw the maneuver chart
+    Maneuvers ms = this->GetManeuvers();
+    int8_t min = 10;
+    int8_t max = -10;
+    for(auto a : ms) { if(a.speed > max) {max = a.speed;} if(a.speed < min) {min=a.speed;} }
+
+    Maneuver m;
+    for(int i=max; i>=min; i--) {
+      printf(WHITE"%2d|", i);
+
+      // standard maneuvers
+      for(Bearing b : {Bearing::LTurn, Bearing::LBank, (i==0) ? Bearing::Stationary : Bearing::Straight, Bearing::RBank, Bearing::RTurn}) {
+        if(FindManeuver(ms, i, b, m)) {
+          printf(" %s%s%s", GetDifficultyColor(m.difficulty).c_str(), GetBearingSymbol(m.bearing).c_str(), NORMAL);
+        } else {
+          printf("  ");
+        }
+      }
+
+      // special maneuvers
+      for(Bearing b : {Bearing::KTurn, Bearing::LSloop, Bearing::RSloop, Bearing::LTroll, Bearing::RTroll}) {
+        if(FindManeuver(ms, i, b, m)) {
+          printf(" %s%s%s", GetDifficultyColor(m.difficulty).c_str(), GetBearingSymbol(m.bearing).c_str(), NORMAL);
+        }
+      }
+
+      printf("\n");
+    }
+
   }
   else {
     /*

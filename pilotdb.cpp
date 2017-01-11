@@ -2,140 +2,273 @@
 #include "shared.h"
 #include <list>
 
+
+
+typedef Maneuvers  M;
+
+const Bearing LT = Bearing::LTurn;
+const Bearing LB = Bearing::LBank;
+const Bearing ST = Bearing::Straight;
+const Bearing RB = Bearing::RBank;
+const Bearing RT = Bearing::RTurn;
+const Bearing KT = Bearing::KTurn;
+const Bearing SY = Bearing::Stationary;
+
+const Difficulty G = Difficulty::Green;
+const Difficulty W = Difficulty::White;
+const Difficulty R = Difficulty::Red;
+
+M mXWING = {                    {4,ST,W},                     {4,KT,R},
+            {3,LT,W}, {3,LB,W}, {3,ST,W}, {3,RB,W}, {3,RT,W},
+            {2,LT,W}, {2,LB,W}, {2,ST,G}, {2,RB,W}, {2,RT,W},
+                      {1,LB,G}, {1,ST,G}, {1,RB,G}
+};
+
+M mTIEFI = {                    {5,ST,W},
+                                {4,ST,W},                     {4,KT,R},
+            {3,LT,W}, {3,LB,W}, {3,ST,G}, {3,RB,W}, {3,RT,W}, {3,KT,R},
+            {2,LT,W}, {2,LB,G}, {2,ST,G}, {2,RB,G}, {2,RT,W},
+            {1,LT,W},                               {1,RT,W}
+};
+
+M mYWING = {                    {4,ST,R},                     {4,KT,R},
+            {3,LT,R}, {3,LB,W}, {3,ST,W}, {3,RB,W}, {3,RT,R},
+            {2,LT,W}, {2,LB,W}, {2,ST,G}, {2,RB,W}, {2,RT,W},
+                      {1,LB,W}, {1,ST,G}, {1,RB,W}
+};
+
+M mTIEAD = {                    {5,ST,W},
+                                {4,ST,W},                     {4,KT,R},
+            {3,LT,W}, {3,LB,W}, {3,ST,G}, {3,RB,W}, {3,RT,W},
+            {2,LT,W}, {2,LB,W}, {2,ST,G}, {2,RB,W}, {2,RT,W},
+                      {1,LB,G},           {1,RB,G}
+};
+
+M mYT130 = {                    {4,ST,W},                     {4,KT,R},
+                      {3,LB,W}, {3,ST,W}, {3,RB,W},           {3,KT,R},
+            {2,LT,W}, {2,LB,W}, {2,ST,G}, {2,RB,W}, {2,RT,W},
+            {1,LT,W}, {1,LB,G}, {1,ST,G}, {1,RB,G}, {1,RT,W}
+};
+
+M mFSP31 = {                    {4,ST,W},                     {4,KT,R},
+            {3,LT,W}, {3,LB,W}, {3,ST,W}, {3,RB,W}, {1,RT,W}, {3,KT,R},
+            {2,LT,W}, {2,LB,W}, {2,ST,G}, {2,RB,W}, {2,RT,W},
+                      {1,LB,G}, {1,ST,G}, {1,RB,G}
+};
+
+M mAWING = {                    {5,ST,G},                     {5,KT,R},
+                                {4,ST,G},
+            {3,LT,W}, {3,LB,W}, {3,ST,G}, {3,RB,W}, {3,RT,W}, {3,KT,R},
+            {2,LT,G}, {2,LB,G}, {2,ST,G}, {2,RB,G}, {2,RT,G},
+            {1,LT,W},                               {1,RT,W}
+};
+
+M mTIEIN = {                    {5,ST,W},                     {5,KT,R},
+                                {4,ST,G},
+            {3,LT,W}, {3,LB,W}, {3,ST,G}, {3,RB,W}, {3,RT,W}, {3,KT,R},
+            {2,LT,G}, {2,LB,G}, {2,ST,G}, {2,RB,G}, {2,RT,G},
+            {1,LT,W},                               {1,RT,W}
+};
+
+M mHK290 = {                    {4,ST,R},
+                      {3,LB,R}, {3,ST,W}, {3,RB,R},
+            {2,LT,W}, {2,LB,W}, {2,ST,G}, {2,RB,W}, {2,RT,W},
+                      {1,LB,G}, {1,ST,G}, {1,RB,G}
+};
+
+M mLAMBD = {          {3,LB,R}, {3,ST,W}, {3,RB,R},
+            {2,LT,R}, {2,LB,W}, {2,ST,G}, {2,RB,W}, {2,RT,R},
+                      {1,LB,G}, {1,ST,G}, {1,RB,G},
+                                {0,SY,R}
+};
+
+M mBWING = {                    {4,ST,R},
+                      {3,LB,R}, {3,ST,W}, {3,RB,R},
+            {2,LT,W}, {2,LB,W}, {2,ST,G}, {2,RB,W}, {2,RT,W}, {2,KT,R},
+            {1,LT,R}, {1,LB,G}, {1,ST,G}, {1,RB,G}, {1,RT,R}
+};
+
+M mTIEBO = {                                                  {5,KT,R},
+                                {4,ST,W},
+            {3,LT,W}, {3,LB,W}, {3,ST,G}, {3,RB,W}, {3,RT,W},
+            {2,LT,R}, {2,LB,G}, {2,ST,G}, {2,RB,G}, {2,RT,R},
+                      {1,LB,W}, {1,ST,G}, {1,RB,W}
+};
+
+M mZ95HH = {                    {4,ST,W},
+            {3,LT,W}, {3,LB,W}, {3,ST,W}, {3,RB,W}, {3,RT,W}, {3,KT,R},
+            {2,LT,W}, {2,LB,G}, {2,ST,G}, {2,RB,G}, {2,RT,W},
+                      {1,LB,W}, {1,ST,G}, {1,RB,W}
+};
+
+M mTIEDE = {                    {5,ST,G},
+                                {4,ST,G},                     {4,KT,W},
+            {3,LT,W}, {3,LB,W}, {3,ST,G}, {3,RB,W}, {3,RT,W},
+            {2,LT,R}, {2,LB,W}, {2,ST,G}, {2,RB,W}, {2,RT,R},
+            {1,LT,R}, {1,LB,W},           {1,RB,W}, {1,RT,R}
+};
+
+M mEWING = {                    {5,ST,W},
+                                {4,ST,W},                     {4,KT,R},
+            {3,LT,W}, {3,LB,W}, {3,ST,G}, {3,RB,W}, {3,RT,W}, {3,KT,R},
+            {2,LT,W}, {2,LB,G}, {2,ST,G}, {2,RB,G}, {2,RT,W},
+                      {1,LB,W}, {1,ST,G}, {1,RB,W}
+};
+
+M mTIEPH = {                    {4,ST,W},                     {4,KT,R},
+            {3,LT,W}, {3,LB,W}, {3,ST,G}, {3,RB,W}, {3,RT,W}, {3,KT,R},
+            {2,LT,W}, {2,LB,G}, {2,ST,G}, {2,RB,G}, {2,RT,W},
+            {1,LT,W},                               {1,RT,W}
+};
+
+M mYT240 = {                    {4,ST,W},                     {4,KT,R},
+            {3,LT,W}, {3,LB,W}, {3,ST,W}, {3,RB,W}, {3,RT,W},
+            {2,LT,W}, {2,LB,W}, {2,ST,G}, {2,RB,W}, {2,RT,W},
+            {1,LT,W}, {1,LB,G}, {1,ST,G}, {1,RB,G}, {1,RT,W}
+};
+
+M mVT49D = {                    {4,ST,W},
+            {3,LT,W}, {3,LB,W}, {3,ST,G}, {3,RB,W}, {3,RT,W},
+            {2,LT,W}, {2,LB,G}, {2,ST,G}, {2,RB,G}, {2,RT,W},
+                      {1,LB,W}, {1,ST,W}, {1,RB,W}
+};
+
+
+
 #define MT  Upg::Modification,Upg::Title
 
 std::list<Pilot> Pilot::pilots = {
-  // faction         base size         name                        short                    xws                       ship                          xws                       gly  unique ps at ag hu sh cst actions                                                 upgrades
-  { Faction::Rebel,  BaseSize::Small, "Luke Skywalker",           "Luke",                  "lukeskywalker",          "X-Wing",                     "xwing",                   "w", true,  8, 3, 2, 3, 2, 28, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "Biggs Darklighter",        "Biggs",                 "biggsdarklighter",       "X-Wing",                     "xwing",                   "w", true,  5, 3, 2, 3, 2, 25, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "Red Squadron Pilot",       "Red Sq. Pilot",         "redsquadronpilot",       "X-Wing",                     "xwing",                   "w", false, 4, 3, 2, 3, 2, 23, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "Rookie Pilot",             "Rookie Pilot",          "rookiepilot",            "X-Wing",                     "xwing",                   "w", false, 2, 3, 2, 3, 2, 21, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "Wedge Antilles",           "Wedge",                 "wedgeantilles",          "X-Wing",                     "xwing",                   "w", true,  9, 3, 2, 3, 2, 29, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "Garven Dreis",             "Garven",                "garvendreis",            "X-Wing",                     "xwing",                   "w", true,  6, 3, 2, 3, 2, 26, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "\"Hobbie\" Klivian",       "Hobbie",                "hobbieklivian",          "X-Wing",                     "xwing",                   "w", true,  5, 3, 2, 3, 2, 25, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "Jek Porkins",              "Porkins",               "jekporkins",             "X-Wing",                     "xwing",                   "w", true,  7, 3, 2, 3, 2, 26, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "Tarn Mison",               "Tarn Mison",            "tarnmison",              "X-Wing",                     "xwing",                   "w", true,  3, 3, 2, 3, 2, 23, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "Wes Janson",               "Wes Janson",            "wasjanson",              "X-Wing",                     "xwing",                   "w", true,  8, 3, 2, 3, 2, 29, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Astromech} },
+  // faction         base size         name                        short                    xws                       ship                          xws                       gly  maneuv unique ps at ag hu sh cst actions                                                 upgrades
+  { Faction::Rebel,  BaseSize::Small, "Luke Skywalker",           "Luke",                  "lukeskywalker",          "X-Wing",                     "xwing",                   "w", mXWING, true,  8, 3, 2, 3, 2, 28, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Biggs Darklighter",        "Biggs",                 "biggsdarklighter",       "X-Wing",                     "xwing",                   "w", mXWING, true,  5, 3, 2, 3, 2, 25, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Red Squadron Pilot",       "Red Sq. Pilot",         "redsquadronpilot",       "X-Wing",                     "xwing",                   "w", mXWING, false, 4, 3, 2, 3, 2, 23, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Rookie Pilot",             "Rookie Pilot",          "rookiepilot",            "X-Wing",                     "xwing",                   "w", mXWING, false, 2, 3, 2, 3, 2, 21, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Wedge Antilles",           "Wedge",                 "wedgeantilles",          "X-Wing",                     "xwing",                   "w", mXWING, true,  9, 3, 2, 3, 2, 29, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Garven Dreis",             "Garven",                "garvendreis",            "X-Wing",                     "xwing",                   "w", mXWING, true,  6, 3, 2, 3, 2, 26, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "\"Hobbie\" Klivian",       "Hobbie",                "hobbieklivian",          "X-Wing",                     "xwing",                   "w", mXWING, true,  5, 3, 2, 3, 2, 25, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Jek Porkins",              "Porkins",               "jekporkins",             "X-Wing",                     "xwing",                   "w", mXWING, true,  7, 3, 2, 3, 2, 26, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Tarn Mison",               "Tarn Mison",            "tarnmison",              "X-Wing",                     "xwing",                   "w", mXWING, true,  3, 3, 2, 3, 2, 23, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Wes Janson",               "Wes Janson",            "wasjanson",              "X-Wing",                     "xwing",                   "w", mXWING, true,  8, 3, 2, 3, 2, 29, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Astromech} },
 
-  { Faction::Empire, BaseSize::Small, "\"Mauler Mithel\"",        "Mauler Mithel",         "maulermithel",           "TIE Fighter",                "tiefighter",              "F", true,  7, 2, 3, 3, 0, 17, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, Upg::Elite} },
-  { Faction::Empire, BaseSize::Small, "\"Dark Curse\"",           "Dark Curse",            "darkcurse",              "TIE Fighter",                "tiefighter",              "F", true,  6, 2, 3, 3, 0, 16, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
-  { Faction::Empire, BaseSize::Small, "\"Night Beast\"",          "Night Beast",           "nightbeast",             "TIE Fighter",                "tiefighter",              "F", true,  5, 2, 3, 3, 0, 15, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
-  { Faction::Empire, BaseSize::Small, "Black Squadron Pilot",     "Black Sq. Plt",         "blacksquadronpilot",     "TIE Fighter",                "tiefighter",              "F", false, 4, 2, 3, 3, 0, 14, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, Upg::Elite} },
-  { Faction::Empire, BaseSize::Small, "Obsidian Squadron Pilot",  "Obsidian Sq. Plt",      "obsidiansquadronpilot",  "TIE Fighter",                "tiefighter",              "F", false, 3, 2, 3, 3, 0, 13, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
-  { Faction::Empire, BaseSize::Small, "Academy Pilot",            "Academy Plt",           "academypilot",           "TIE Fighter",                "tiefighter",              "F", false, 1, 2, 3, 3, 0, 12, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
-  { Faction::Empire, BaseSize::Small, "\"Howlrunner\"",           "Howlrunner",            "howlrunner",             "TIE Fighter",                "tiefighter",              "F", true,  8, 2, 3, 3, 0, 18, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, Upg::Elite} },
-  { Faction::Empire, BaseSize::Small, "\"Backstabber\"",          "Backstabber",           "backstabber",            "TIE Fighter",                "tiefighter",              "F", true,  6, 2, 3, 3, 0, 16, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
-  { Faction::Empire, BaseSize::Small, "\"Winged Gundark\"",       "Winged Gundark",        "wingedgundark",          "TIE Fighter",                "tiefighter",              "F", true,  5, 2, 3, 3, 0, 15, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
-  { Faction::Empire, BaseSize::Small, "\"Scourge\"",              "Scourge",               "scourge",                "TIE Fighter",                "tiefighter",              "F", true,  7, 2, 3, 3, 0, 17, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, Upg::Elite} },
-  { Faction::Empire, BaseSize::Small, "\"Wampa\"",                "Wampa",                 "wampa",                  "TIE Fighter",                "tiefighter",              "F", true,  4, 2, 3, 3, 0, 14, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
-  { Faction::Empire, BaseSize::Small, "\"Youngster\"",            "Youngster",             "youngster",              "TIE Fighter",                "tiefighter",              "F", true,  6, 2, 3, 3, 0, 15, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, Upg::Elite} },
-  { Faction::Empire, BaseSize::Small, "\"Chaser\"",               "Chaser",                "chaser",                 "TIE Fighter",                "tiefighter",              "F", true,  3, 2, 3, 3, 0, 14, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
+  { Faction::Empire, BaseSize::Small, "\"Mauler Mithel\"",        "Mauler Mithel",         "maulermithel",           "TIE Fighter",                "tiefighter",              "F", mTIEFI, true,  7, 2, 3, 3, 0, 17, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, Upg::Elite} },
+  { Faction::Empire, BaseSize::Small, "\"Dark Curse\"",           "Dark Curse",            "darkcurse",              "TIE Fighter",                "tiefighter",              "F", mTIEFI, true,  6, 2, 3, 3, 0, 16, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
+  { Faction::Empire, BaseSize::Small, "\"Night Beast\"",          "Night Beast",           "nightbeast",             "TIE Fighter",                "tiefighter",              "F", mTIEFI, true,  5, 2, 3, 3, 0, 15, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
+  { Faction::Empire, BaseSize::Small, "Black Squadron Pilot",     "Black Sq. Plt",         "blacksquadronpilot",     "TIE Fighter",                "tiefighter",              "F", mTIEFI, false, 4, 2, 3, 3, 0, 14, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, Upg::Elite} },
+  { Faction::Empire, BaseSize::Small, "Obsidian Squadron Pilot",  "Obsidian Sq. Plt",      "obsidiansquadronpilot",  "TIE Fighter",                "tiefighter",              "F", mTIEFI, false, 3, 2, 3, 3, 0, 13, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
+  { Faction::Empire, BaseSize::Small, "Academy Pilot",            "Academy Plt",           "academypilot",           "TIE Fighter",                "tiefighter",              "F", mTIEFI, false, 1, 2, 3, 3, 0, 12, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
+  { Faction::Empire, BaseSize::Small, "\"Howlrunner\"",           "Howlrunner",            "howlrunner",             "TIE Fighter",                "tiefighter",              "F", mTIEFI, true,  8, 2, 3, 3, 0, 18, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, Upg::Elite} },
+  { Faction::Empire, BaseSize::Small, "\"Backstabber\"",          "Backstabber",           "backstabber",            "TIE Fighter",                "tiefighter",              "F", mTIEFI, true,  6, 2, 3, 3, 0, 16, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
+  { Faction::Empire, BaseSize::Small, "\"Winged Gundark\"",       "Winged Gundark",        "wingedgundark",          "TIE Fighter",                "tiefighter",              "F", mTIEFI, true,  5, 2, 3, 3, 0, 15, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
+  { Faction::Empire, BaseSize::Small, "\"Scourge\"",              "Scourge",               "scourge",                "TIE Fighter",                "tiefighter",              "F", mTIEFI, true,  7, 2, 3, 3, 0, 17, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, Upg::Elite} },
+  { Faction::Empire, BaseSize::Small, "\"Wampa\"",                "Wampa",                 "wampa",                  "TIE Fighter",                "tiefighter",              "F", mTIEFI, true,  4, 2, 3, 3, 0, 14, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
+  { Faction::Empire, BaseSize::Small, "\"Youngster\"",            "Youngster",             "youngster",              "TIE Fighter",                "tiefighter",              "F", mTIEFI, true,  6, 2, 3, 3, 0, 15, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, Upg::Elite} },
+  { Faction::Empire, BaseSize::Small, "\"Chaser\"",               "Chaser",                "chaser",                 "TIE Fighter",                "tiefighter",              "F", mTIEFI, true,  3, 2, 3, 3, 0, 14, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, } },
 
-  { Faction::Rebel,  BaseSize::Small, "Horton Salm",              "Horton Salm",           "hortonsalm",             "Y-Wing",                     "ywing",                   "y", true,  8, 2, 1, 5, 3, 25, Act::Focus|Act::TargetLock,                            {MT, Upg::Turret, Upg::Torpedo, Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "\"Dutch\" Vander",         "Dutch Vander",          "dutchvander",            "Y-Wing",                     "ywing",                   "y", true,  6, 2, 1, 5, 3, 23, Act::Focus|Act::TargetLock,                            {MT, Upg::Turret, Upg::Torpedo, Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "Gray Squadron Pilot",      "Gray Sq. Plt",          "graysquadronpilot",      "Y-Wing",                     "ywing",                   "y", false, 4, 2, 1, 5, 3, 20, Act::Focus|Act::TargetLock,                            {MT, Upg::Turret, Upg::Torpedo, Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "Gold Squadron Pilot",      "Gold Sq. Plt",          "goldsquadronpilot",      "Y-Wing",                     "ywing",                   "y", false, 2, 2, 1, 5, 3, 18, Act::Focus|Act::TargetLock,                            {MT, Upg::Turret, Upg::Torpedo, Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Horton Salm",              "Horton Salm",           "hortonsalm",             "Y-Wing",                     "ywing",                   "y", mYWING, true,  8, 2, 1, 5, 3, 25, Act::Focus|Act::TargetLock,                            {MT, Upg::Turret, Upg::Torpedo, Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "\"Dutch\" Vander",         "Dutch Vander",          "dutchvander",            "Y-Wing",                     "ywing",                   "y", mYWING, true,  6, 2, 1, 5, 3, 23, Act::Focus|Act::TargetLock,                            {MT, Upg::Turret, Upg::Torpedo, Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Gray Squadron Pilot",      "Gray Sq. Plt",          "graysquadronpilot",      "Y-Wing",                     "ywing",                   "y", mYWING, false, 4, 2, 1, 5, 3, 20, Act::Focus|Act::TargetLock,                            {MT, Upg::Turret, Upg::Torpedo, Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Gold Squadron Pilot",      "Gold Sq. Plt",          "goldsquadronpilot",      "Y-Wing",                     "ywing",                   "y", mYWING, false, 2, 2, 1, 5, 3, 18, Act::Focus|Act::TargetLock,                            {MT, Upg::Turret, Upg::Torpedo, Upg::Torpedo, Upg::Astromech} },
 
-  { Faction::Empire, BaseSize::Small, "Darth Vader",              "Darth Vader",           "darthvader",             "TIE Advanced",               "tieadvanced",             "A", true,  9, 2, 3, 3, 2, 29, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::Missile} },
-  { Faction::Empire, BaseSize::Small, "Maarek Stele",             "Maarek Steele",         "maarekstele",            "TIE Advanced",               "tieadvanced",             "A", true,  7, 2, 3, 3, 2, 27, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::Missile} },
-  { Faction::Empire, BaseSize::Small, "Storm Squadron Pilot",     "Storm Sq. Plt",         "stormsquadronpilot",     "TIE Advanced",               "tieadvanced",             "A", false, 4, 2, 3, 3, 2, 23, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT,             Upg::Missile} },
-  { Faction::Empire, BaseSize::Small, "Tempest Squadron Pilot",   "Tempest Sq. Plt",       "tempestsquadronpilot",   "TIE Advanced",               "tieadvanced",             "A", false, 2, 2, 3, 3, 2, 21, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT,             Upg::Missile} },
-  { Faction::Empire, BaseSize::Small, "Zertik Strom",             "Zertik Strom",          "zertikstrom",            "TIE Advanced",               "tieadvanced",             "A", true,  6, 2, 3, 3, 2, 26, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::Missile} },
-  { Faction::Empire, BaseSize::Small, "Juno Eclipse",             "Juno Eclipse",          "junoeclipse",            "TIE Advanced",               "tieadvanced",             "A", true,  8, 2, 3, 3, 2, 28, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::Missile} },
-  { Faction::Empire, BaseSize::Small, "Commander Alozen",         "Cmdr. Alozen",          "commanderalozen",        "TIE Advanced",               "tieadvanced",             "A", true,  5, 2, 3, 3, 2, 25, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::Missile} },
-  { Faction::Empire, BaseSize::Small, "Lieutenant Colzet",        "Lt. Colzet",            "lieutenantcolzet",       "TIE Advanced",               "tieadvanced",             "A", true,  3, 2, 3, 3, 2, 23, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT,             Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Darth Vader",              "Darth Vader",           "darthvader",             "TIE Advanced",               "tieadvanced",             "A", mTIEAD, true,  9, 2, 3, 3, 2, 29, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Maarek Stele",             "Maarek Steele",         "maarekstele",            "TIE Advanced",               "tieadvanced",             "A", mTIEAD, true,  7, 2, 3, 3, 2, 27, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Storm Squadron Pilot",     "Storm Sq. Plt",         "stormsquadronpilot",     "TIE Advanced",               "tieadvanced",             "A", mTIEAD, false, 4, 2, 3, 3, 2, 23, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT,             Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Tempest Squadron Pilot",   "Tempest Sq. Plt",       "tempestsquadronpilot",   "TIE Advanced",               "tieadvanced",             "A", mTIEAD, false, 2, 2, 3, 3, 2, 21, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT,             Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Zertik Strom",             "Zertik Strom",          "zertikstrom",            "TIE Advanced",               "tieadvanced",             "A", mTIEAD, true,  6, 2, 3, 3, 2, 26, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Juno Eclipse",             "Juno Eclipse",          "junoeclipse",            "TIE Advanced",               "tieadvanced",             "A", mTIEAD, true,  8, 2, 3, 3, 2, 28, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Commander Alozen",         "Cmdr. Alozen",          "commanderalozen",        "TIE Advanced",               "tieadvanced",             "A", mTIEAD, true,  5, 2, 3, 3, 2, 25, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Lieutenant Colzet",        "Lt. Colzet",            "lieutenantcolzet",       "TIE Advanced",               "tieadvanced",             "A", mTIEAD, true,  3, 2, 3, 3, 2, 23, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT,             Upg::Missile} },
 
-  { Faction::Rebel,  BaseSize::Large, "Han Solo",                 "Han Solo",              "hansolo",                "YT-1300",                    "yt1300",                  "m", true,  9, 3, 1, 8, 5, 46, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile, Upg::Crew, Upg::Crew} },
-  { Faction::Rebel,  BaseSize::Large, "Lando Calrissian",         "Lando",                 "landocalrissian",        "YT-1300",                    "yt1300",                  "m", true,  7, 3, 1, 8, 5, 44, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile, Upg::Crew, Upg::Crew} },
-  { Faction::Rebel,  BaseSize::Large, "Chewbacca",                "Chewbacca",             "chewbacca",              "YT-1300",                    "yt1300",                  "m", true,  5, 3, 1, 8, 5, 42, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile, Upg::Crew, Upg::Crew} },
-  { Faction::Rebel,  BaseSize::Large, "Outer Rim Smuggler",       "Outer Rim Smug",        "outerrimsmuggler",       "YT-1300",                    "yt1300",                  "m", false, 1, 2, 1, 6, 4, 27, Act::Focus|Act::TargetLock,                            {MT,             Upg::Missile, Upg::Crew, Upg::Crew} },
-  { Faction::Rebel,  BaseSize::Large, "Han Solo",                 "Han Solo",              "hansolo-swx57",          "YT-1300",                    "yt1300",                  "m", true,  9, 3, 1, 8, 5, 46, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile, Upg::Crew, Upg::Crew} },
-  { Faction::Rebel,  BaseSize::Large, "Rey",                      "Rey",                   "rey",                    "YT-1300",                    "yt1300",                  "m", true,  8, 3, 1, 8, 5, 45, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile, Upg::Crew, Upg::Crew} },
-  { Faction::Rebel,  BaseSize::Large, "Chewbacca",                "Chewbacca",             "chewbacca-swx57",        "YT-1300",                    "yt1300",                  "m", true,  5, 3, 1, 8, 5, 42, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile, Upg::Crew, Upg::Crew} },
-  { Faction::Rebel,  BaseSize::Large, "Resistance Sympathizer",   "Res Sympathizer",       "resistancesympathizer",  "YT-1300",                    "yt1300",                  "m", false, 3, 3, 1, 8, 5, 38, Act::Focus|Act::TargetLock,                            {MT,             Upg::Missile, Upg::Crew, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Large, "Han Solo",                 "Han Solo",              "hansolo",                "YT-1300",                    "yt1300",                  "m", mYT130, true,  9, 3, 1, 8, 5, 46, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile, Upg::Crew, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Large, "Lando Calrissian",         "Lando",                 "landocalrissian",        "YT-1300",                    "yt1300",                  "m", mYT130, true,  7, 3, 1, 8, 5, 44, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile, Upg::Crew, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Large, "Chewbacca",                "Chewbacca",             "chewbacca",              "YT-1300",                    "yt1300",                  "m", mYT130, true,  5, 3, 1, 8, 5, 42, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile, Upg::Crew, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Large, "Outer Rim Smuggler",       "Outer Rim Smug",        "outerrimsmuggler",       "YT-1300",                    "yt1300",                  "m", mYT130, false, 1, 2, 1, 6, 4, 27, Act::Focus|Act::TargetLock,                            {MT,             Upg::Missile, Upg::Crew, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Large, "Han Solo",                 "Han Solo",              "hansolo-swx57",          "YT-1300",                    "yt1300",                  "m", mYT130, true,  9, 3, 1, 8, 5, 46, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile, Upg::Crew, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Large, "Rey",                      "Rey",                   "rey",                    "YT-1300",                    "yt1300",                  "m", mYT130, true,  8, 3, 1, 8, 5, 45, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile, Upg::Crew, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Large, "Chewbacca",                "Chewbacca",             "chewbacca-swx57",        "YT-1300",                    "yt1300",                  "m", mYT130, true,  5, 3, 1, 8, 5, 42, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile, Upg::Crew, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Large, "Resistance Sympathizer",   "Res Sympathizer",       "resistancesympathizer",  "YT-1300",                    "yt1300",                  "m", mYT130, false, 3, 3, 1, 8, 5, 38, Act::Focus|Act::TargetLock,                            {MT,             Upg::Missile, Upg::Crew, Upg::Crew} },
 
-  { Faction::Empire, BaseSize::Large, "Boba Fett",                "Boba Fett",             "bobafett",               "Firespray-31",               "firespray31",             "f", true,  8, 3, 2, 6, 4, 39, Act::Focus|Act::TargetLock|Act::Evade,                 {MT, Upg::Elite, Upg::Cannon, Upg::Bomb, Upg::Crew, Upg::Missile} },
-  { Faction::Empire, BaseSize::Large, "Kath Scarlet",             "Kath Scarlet",          "kathscarlet",            "Firespray-31",               "firespray31",             "f", true,  7, 3, 2, 6, 4, 38, Act::Focus|Act::TargetLock|Act::Evade,                 {MT, Upg::Elite, Upg::Cannon, Upg::Bomb, Upg::Crew, Upg::Missile} },
-  { Faction::Empire, BaseSize::Large, "Krassis Trelix",           "Krasses Trelix",        "krassistrelix",          "Firespray-31",               "firespray31",             "f", true,  5, 3, 2, 6, 4, 36, Act::Focus|Act::TargetLock|Act::Evade,                 {MT,             Upg::Cannon, Upg::Bomb, Upg::Crew, Upg::Missile} },
-  { Faction::Empire, BaseSize::Large, "Bounty Hunter",            "Bounty Hunter",         "bountyhunter",           "Firespray-31",               "firespray31",             "f", false, 3, 3, 2, 6, 4, 33, Act::Focus|Act::TargetLock|Act::Evade,                 {MT,             Upg::Cannon, Upg::Bomb, Upg::Crew, Upg::Missile} },
+  { Faction::Empire, BaseSize::Large, "Boba Fett",                "Boba Fett",             "bobafett",               "Firespray-31",               "firespray31",             "f", mFSP31, true,  8, 3, 2, 6, 4, 39, Act::Focus|Act::TargetLock|Act::Evade,                 {MT, Upg::Elite, Upg::Cannon, Upg::Bomb, Upg::Crew, Upg::Missile} },
+  { Faction::Empire, BaseSize::Large, "Kath Scarlet",             "Kath Scarlet",          "kathscarlet",            "Firespray-31",               "firespray31",             "f", mFSP31, true,  7, 3, 2, 6, 4, 38, Act::Focus|Act::TargetLock|Act::Evade,                 {MT, Upg::Elite, Upg::Cannon, Upg::Bomb, Upg::Crew, Upg::Missile} },
+  { Faction::Empire, BaseSize::Large, "Krassis Trelix",           "Krasses Trelix",        "krassistrelix",          "Firespray-31",               "firespray31",             "f", mFSP31, true,  5, 3, 2, 6, 4, 36, Act::Focus|Act::TargetLock|Act::Evade,                 {MT,             Upg::Cannon, Upg::Bomb, Upg::Crew, Upg::Missile} },
+  { Faction::Empire, BaseSize::Large, "Bounty Hunter",            "Bounty Hunter",         "bountyhunter",           "Firespray-31",               "firespray31",             "f", mFSP31, false, 3, 3, 2, 6, 4, 33, Act::Focus|Act::TargetLock|Act::Evade,                 {MT,             Upg::Cannon, Upg::Bomb, Upg::Crew, Upg::Missile} },
 
-  { Faction::Rebel,  BaseSize::Small, "Tycho Celchu",             "Tycho Celchu",          "tychocelchu",            "A-Wing",                     "awing",                   "a", true,  8, 2, 3, 2, 2, 26, Act::Focus|Act::TargetLock|Act::Boost|Act::Evade,      {MT, Upg::Elite, Upg::Missile} },
-  { Faction::Rebel,  BaseSize::Small, "Arvel Crynyd",             "Arvel Crynyd",          "arvelcrynyd",            "A-Wing",                     "awing",                   "a", true,  6, 2, 3, 2, 2, 23, Act::Focus|Act::TargetLock|Act::Boost|Act::Evade,      {MT,             Upg::Missile} },
-  { Faction::Rebel,  BaseSize::Small, "Green Squadron Pilot",     "Green Sq. Pilot",       "greensquadronpilot",     "A-Wing",                     "awing",                   "a", false, 3, 2, 3, 2, 2, 19, Act::Focus|Act::TargetLock|Act::Boost|Act::Evade,      {MT, Upg::Elite, Upg::Missile} },
-  { Faction::Rebel,  BaseSize::Small, "Prototype Pilot",          "Prototype Pilot",       "prototypepilot",         "A-Wing",                     "awing",                   "a", false, 1, 2, 3, 2, 2, 17, Act::Focus|Act::TargetLock|Act::Boost|Act::Evade,      {MT,             Upg::Missile} },
-  { Faction::Rebel,  BaseSize::Small, "Jake Farrell",             "Jake Farrell",          "jakefarrell",            "A-Wing",                     "awing",                   "a", true , 7, 2, 3, 2, 2, 24, Act::Focus|Act::TargetLock|Act::Boost|Act::Evade,      {MT, Upg::Elite, Upg::Missile} },
-  { Faction::Rebel,  BaseSize::Small, "Gemmer Sojan",             "Gemmer Sojan",          "gennersojan",            "A-Wing",                     "awing",                   "a", true , 5, 2, 3, 2, 2, 22, Act::Focus|Act::TargetLock|Act::Boost|Act::Evade,      {MT,             Upg::Missile} },
+  { Faction::Rebel,  BaseSize::Small, "Tycho Celchu",             "Tycho Celchu",          "tychocelchu",            "A-Wing",                     "awing",                   "a", mAWING, true,  8, 2, 3, 2, 2, 26, Act::Focus|Act::TargetLock|Act::Boost|Act::Evade,      {MT, Upg::Elite, Upg::Missile} },
+  { Faction::Rebel,  BaseSize::Small, "Arvel Crynyd",             "Arvel Crynyd",          "arvelcrynyd",            "A-Wing",                     "awing",                   "a", mAWING, true,  6, 2, 3, 2, 2, 23, Act::Focus|Act::TargetLock|Act::Boost|Act::Evade,      {MT,             Upg::Missile} },
+  { Faction::Rebel,  BaseSize::Small, "Green Squadron Pilot",     "Green Sq. Pilot",       "greensquadronpilot",     "A-Wing",                     "awing",                   "a", mAWING, false, 3, 2, 3, 2, 2, 19, Act::Focus|Act::TargetLock|Act::Boost|Act::Evade,      {MT, Upg::Elite, Upg::Missile} },
+  { Faction::Rebel,  BaseSize::Small, "Prototype Pilot",          "Prototype Pilot",       "prototypepilot",         "A-Wing",                     "awing",                   "a", mAWING, false, 1, 2, 3, 2, 2, 17, Act::Focus|Act::TargetLock|Act::Boost|Act::Evade,      {MT,             Upg::Missile} },
+  { Faction::Rebel,  BaseSize::Small, "Jake Farrell",             "Jake Farrell",          "jakefarrell",            "A-Wing",                     "awing",                   "a", mAWING, true , 7, 2, 3, 2, 2, 24, Act::Focus|Act::TargetLock|Act::Boost|Act::Evade,      {MT, Upg::Elite, Upg::Missile} },
+  { Faction::Rebel,  BaseSize::Small, "Gemmer Sojan",             "Gemmer Sojan",          "gennersojan",            "A-Wing",                     "awing",                   "a", mAWING, true , 5, 2, 3, 2, 2, 22, Act::Focus|Act::TargetLock|Act::Boost|Act::Evade,      {MT,             Upg::Missile} },
 
-  { Faction::Empire, BaseSize::Small, "Soontir Fel",              "Soontir Fel",           "soontirfel",             "TIE Interceptor",            "tieinterceptor",          "I", true,  9, 3, 3, 3, 0, 27, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT, Upg::Elite} },
-  { Faction::Empire, BaseSize::Small, "Turr Phennir",             "Turr Phennir",          "turrphennir",            "TIE Interceptor",            "tieinterceptor",          "I", true,  7, 3, 3, 3, 0, 25, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT, Upg::Elite} },
-  { Faction::Empire, BaseSize::Small, "\"Fel's Wrath\"",          "Fel's Wrath",           "felswrath",              "TIE Interceptor",            "tieinterceptor",          "I", true,  5, 3, 3, 3, 0, 23, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT,           } },
-  { Faction::Empire, BaseSize::Small, "Saber Squadron Pilot",     "Saber Sq. Pilot",       "sabersquadronpilot",     "TIE Interceptor",            "tieinterceptor",          "I", false, 4, 3, 3, 3, 0, 21, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT, Upg::Elite} },
-  { Faction::Empire, BaseSize::Small, "Avenger Squadron Pilot",   "Avenger Sq. Pilot",     "avengersquadronpilot",   "TIE Interceptor",            "tieinterceptor",          "I", false, 3, 3, 3, 3, 0, 20, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT,           } },
-  { Faction::Empire, BaseSize::Small, "Alpha Squadron Pilot",     "Alpha Sq. Pilot",       "alphasquadronpilot",     "TIE Interceptor",            "tieinterceptor",          "I", false, 1, 3, 3, 3, 0, 18, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT,           } },
-  { Faction::Empire, BaseSize::Small, "Carnor Jax",               "Carnor Jax",            "carnorjax",              "TIE Interceptor",            "tieinterceptor",          "I", true,  8, 3, 3, 3, 0, 26, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT, Upg::Elite} },
-  { Faction::Empire, BaseSize::Small, "Tetran Cowall",            "Tetran Cowall",         "tetrancowell",           "TIE Interceptor",            "tieinterceptor",          "I", true,  7, 3, 3, 3, 0, 24, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT, Upg::Elite} },
-  { Faction::Empire, BaseSize::Small, "Kir Kanos",                "Kir Kanos",             "kirkanos",               "TIE Interceptor",            "tieinterceptor",          "I", true,  6, 3, 3, 3, 0, 24, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT,           } },
-  { Faction::Empire, BaseSize::Small, "Lieutenant Lorrir",        "Lt. Lorrir",            "lieutenantlorrir",       "TIE Interceptor",            "tieinterceptor",          "I", true,  5, 3, 3, 3, 0, 23, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT,           } },
-  { Faction::Empire, BaseSize::Small, "Royal Guard Pilot",        "Royal Guard Pilot",     "royalguardpilot",        "TIE Interceptor",            "tieinterceptor",          "I", false, 6, 3, 3, 3, 0, 22, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT, Upg::Elite} },
+  { Faction::Empire, BaseSize::Small, "Soontir Fel",              "Soontir Fel",           "soontirfel",             "TIE Interceptor",            "tieinterceptor",          "I", mTIEIN, true,  9, 3, 3, 3, 0, 27, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT, Upg::Elite} },
+  { Faction::Empire, BaseSize::Small, "Turr Phennir",             "Turr Phennir",          "turrphennir",            "TIE Interceptor",            "tieinterceptor",          "I", mTIEIN, true,  7, 3, 3, 3, 0, 25, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT, Upg::Elite} },
+  { Faction::Empire, BaseSize::Small, "\"Fel's Wrath\"",          "Fel's Wrath",           "felswrath",              "TIE Interceptor",            "tieinterceptor",          "I", mTIEIN, true,  5, 3, 3, 3, 0, 23, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT,           } },
+  { Faction::Empire, BaseSize::Small, "Saber Squadron Pilot",     "Saber Sq. Pilot",       "sabersquadronpilot",     "TIE Interceptor",            "tieinterceptor",          "I", mTIEIN, false, 4, 3, 3, 3, 0, 21, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT, Upg::Elite} },
+  { Faction::Empire, BaseSize::Small, "Avenger Squadron Pilot",   "Avenger Sq. Pilot",     "avengersquadronpilot",   "TIE Interceptor",            "tieinterceptor",          "I", mTIEIN, false, 3, 3, 3, 3, 0, 20, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT,           } },
+  { Faction::Empire, BaseSize::Small, "Alpha Squadron Pilot",     "Alpha Sq. Pilot",       "alphasquadronpilot",     "TIE Interceptor",            "tieinterceptor",          "I", mTIEIN, false, 1, 3, 3, 3, 0, 18, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT,           } },
+  { Faction::Empire, BaseSize::Small, "Carnor Jax",               "Carnor Jax",            "carnorjax",              "TIE Interceptor",            "tieinterceptor",          "I", mTIEIN, true,  8, 3, 3, 3, 0, 26, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT, Upg::Elite} },
+  { Faction::Empire, BaseSize::Small, "Tetran Cowall",            "Tetran Cowall",         "tetrancowell",           "TIE Interceptor",            "tieinterceptor",          "I", mTIEIN, true,  7, 3, 3, 3, 0, 24, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT, Upg::Elite} },
+  { Faction::Empire, BaseSize::Small, "Kir Kanos",                "Kir Kanos",             "kirkanos",               "TIE Interceptor",            "tieinterceptor",          "I", mTIEIN, true,  6, 3, 3, 3, 0, 24, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT,           } },
+  { Faction::Empire, BaseSize::Small, "Lieutenant Lorrir",        "Lt. Lorrir",            "lieutenantlorrir",       "TIE Interceptor",            "tieinterceptor",          "I", mTIEIN, true,  5, 3, 3, 3, 0, 23, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT,           } },
+  { Faction::Empire, BaseSize::Small, "Royal Guard Pilot",        "Royal Guard Pilot",     "royalguardpilot",        "TIE Interceptor",            "tieinterceptor",          "I", mTIEIN, false, 6, 3, 3, 3, 0, 22, Act::Focus|Act::BarrelRoll|Act::Boost|Act::Evade,      {MT, Upg::Elite} },
 
-  { Faction::Rebel,  BaseSize::Small, "Jan Ors",                  "Jan Ors",               "janors",                 "HWK-290",                    "hwk290",                  "h", true,  8, 1, 2, 4, 1, 25, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Cannon, Upg::Crew} },
-  { Faction::Rebel,  BaseSize::Small, "Kyle Katarn",              "Kyle Katarn",           "kylekatarn",             "HWK-290",                    "hwk290",                  "h", true,  6, 1, 2, 4, 1, 21, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Cannon, Upg::Crew} },
-  { Faction::Rebel,  BaseSize::Small, "Roark Garnet",             "Roark Garnet",          "roarkgarnet",            "HWK-290",                    "hwk290",                  "h", true,  4, 1, 2, 4, 1, 19, Act::Focus|Act::TargetLock,                            {MT,             Upg::Cannon, Upg::Crew} },
-  { Faction::Rebel,  BaseSize::Small, "Rebel Operative",          "Rebel Operative",       "rebeloperative",         "HWK-290",                    "hwk290",                  "h", false, 2, 1, 2, 4, 1, 16, Act::Focus|Act::TargetLock,                            {MT,             Upg::Cannon, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Small, "Jan Ors",                  "Jan Ors",               "janors",                 "HWK-290",                    "hwk290",                  "h", mHK290, true,  8, 1, 2, 4, 1, 25, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Cannon, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Small, "Kyle Katarn",              "Kyle Katarn",           "kylekatarn",             "HWK-290",                    "hwk290",                  "h", mHK290, true,  6, 1, 2, 4, 1, 21, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Cannon, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Small, "Roark Garnet",             "Roark Garnet",          "roarkgarnet",            "HWK-290",                    "hwk290",                  "h", mHK290, true,  4, 1, 2, 4, 1, 19, Act::Focus|Act::TargetLock,                            {MT,             Upg::Cannon, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Small, "Rebel Operative",          "Rebel Operative",       "rebeloperative",         "HWK-290",                    "hwk290",                  "h", mHK290, false, 2, 1, 2, 4, 1, 16, Act::Focus|Act::TargetLock,                            {MT,             Upg::Cannon, Upg::Crew} },
 
-  { Faction::Empire, BaseSize::Large, "Captain Kagi",             "Capt. Kagi",            "captainkagi",            "Lambda-class Shuttle",       "lambdaclassshuttle",      "l", true,  8, 3, 1, 5, 5, 27, Act::Focus|Act::TargetLock,                            {MT, Upg::System, Upg::Cannon, Upg::Crew, Upg::Crew} },
-  { Faction::Empire, BaseSize::Large, "Captain Yorr",             "Capt. Yorr",            "captainyorr",            "Lambda-class Shuttle",       "lambdaclassshuttle",      "l", true,  4, 3, 1, 5, 5, 24, Act::Focus|Act::TargetLock,                            {MT, Upg::System, Upg::Cannon, Upg::Crew, Upg::Crew} },
-  { Faction::Empire, BaseSize::Large, "Colonel Jendon",           "Col. Jendon",           "coloneljendon",          "Lambda-class Shuttle",       "lambdaclassshuttle",      "l", true,  6, 3, 1, 5, 5, 26, Act::Focus|Act::TargetLock,                            {MT, Upg::System, Upg::Cannon, Upg::Crew, Upg::Crew} },
-  { Faction::Empire, BaseSize::Large, "Omicron Group Pilot",      "Omicron Grp Pilot",     "omicrongrouppilot",      "Lambda-class Shuttle",       "lambdaclassshuttle",      "l", false, 2, 3, 1, 5, 5, 21, Act::Focus|Act::TargetLock,                            {MT, Upg::System, Upg::Cannon, Upg::Crew, Upg::Crew} },
+  { Faction::Empire, BaseSize::Large, "Captain Kagi",             "Capt. Kagi",            "captainkagi",            "Lambda-class Shuttle",       "lambdaclassshuttle",      "l", mLAMBD, true,  8, 3, 1, 5, 5, 27, Act::Focus|Act::TargetLock,                            {MT, Upg::System, Upg::Cannon, Upg::Crew, Upg::Crew} },
+  { Faction::Empire, BaseSize::Large, "Captain Yorr",             "Capt. Yorr",            "captainyorr",            "Lambda-class Shuttle",       "lambdaclassshuttle",      "l", mLAMBD, true,  4, 3, 1, 5, 5, 24, Act::Focus|Act::TargetLock,                            {MT, Upg::System, Upg::Cannon, Upg::Crew, Upg::Crew} },
+  { Faction::Empire, BaseSize::Large, "Colonel Jendon",           "Col. Jendon",           "coloneljendon",          "Lambda-class Shuttle",       "lambdaclassshuttle",      "l", mLAMBD, true,  6, 3, 1, 5, 5, 26, Act::Focus|Act::TargetLock,                            {MT, Upg::System, Upg::Cannon, Upg::Crew, Upg::Crew} },
+  { Faction::Empire, BaseSize::Large, "Omicron Group Pilot",      "Omicron Grp Pilot",     "omicrongrouppilot",      "Lambda-class Shuttle",       "lambdaclassshuttle",      "l", mLAMBD, false, 2, 3, 1, 5, 5, 21, Act::Focus|Act::TargetLock,                            {MT, Upg::System, Upg::Cannon, Upg::Crew, Upg::Crew} },
 
-  { Faction::Rebel,  BaseSize::Small, "Ten Numb",                 "Ten Numb",              "tennumb",                "B-Wing",                     "bwing",                   "b", true,  8, 3, 1, 3, 5, 31, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::System, Upg::Cannon, Upg::Torpedo, Upg::Torpedo} },
-  { Faction::Rebel,  BaseSize::Small, "Ibtisam",                  "Ibtisam",               "ibtisam",                "B-Wing",                     "bwing",                   "b", true,  6, 3, 1, 3, 5, 28, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::System, Upg::Cannon, Upg::Torpedo, Upg::Torpedo} },
-  { Faction::Rebel,  BaseSize::Small, "Dagger Squadron Pilot",    "Dagger Sq. Pilot",      "daggersquadronpilot",    "B-Wing",                     "bwing",                   "b", false, 4, 3, 1, 3, 5, 24, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::System, Upg::Cannon, Upg::Torpedo, Upg::Torpedo} },
-  { Faction::Rebel,  BaseSize::Small, "Blue Squadron Pilot",      "Blue Sq. Pilot",        "bluesquadronpilot",      "B-Wing",                     "bwing",                   "b", false, 2, 3, 1, 3, 5, 22, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::System, Upg::Cannon, Upg::Torpedo, Upg::Torpedo} },
-  { Faction::Rebel,  BaseSize::Small, "Keyan Farlander",          "Keyan Farlander",       "keyanfarlander",         "B-Wing",                     "bwing",                   "b", true,  7, 3, 1, 3, 5, 29, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::System, Upg::Cannon, Upg::Torpedo, Upg::Torpedo} },
-  { Faction::Rebel,  BaseSize::Small, "Nera Dantels",             "Nera Dantels",          "neradantels",            "B-Wing",                     "bwing",                   "b", true,  5, 3, 1, 3, 5, 26, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::System, Upg::Cannon, Upg::Torpedo, Upg::Torpedo} },
+  { Faction::Rebel,  BaseSize::Small, "Ten Numb",                 "Ten Numb",              "tennumb",                "B-Wing",                     "bwing",                   "b", mBWING, true,  8, 3, 1, 3, 5, 31, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::System, Upg::Cannon, Upg::Torpedo, Upg::Torpedo} },
+  { Faction::Rebel,  BaseSize::Small, "Ibtisam",                  "Ibtisam",               "ibtisam",                "B-Wing",                     "bwing",                   "b", mBWING, true,  6, 3, 1, 3, 5, 28, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::System, Upg::Cannon, Upg::Torpedo, Upg::Torpedo} },
+  { Faction::Rebel,  BaseSize::Small, "Dagger Squadron Pilot",    "Dagger Sq. Pilot",      "daggersquadronpilot",    "B-Wing",                     "bwing",                   "b", mBWING, false, 4, 3, 1, 3, 5, 24, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::System, Upg::Cannon, Upg::Torpedo, Upg::Torpedo} },
+  { Faction::Rebel,  BaseSize::Small, "Blue Squadron Pilot",      "Blue Sq. Pilot",        "bluesquadronpilot",      "B-Wing",                     "bwing",                   "b", mBWING, false, 2, 3, 1, 3, 5, 22, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::System, Upg::Cannon, Upg::Torpedo, Upg::Torpedo} },
+  { Faction::Rebel,  BaseSize::Small, "Keyan Farlander",          "Keyan Farlander",       "keyanfarlander",         "B-Wing",                     "bwing",                   "b", mBWING, true,  7, 3, 1, 3, 5, 29, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::System, Upg::Cannon, Upg::Torpedo, Upg::Torpedo} },
+  { Faction::Rebel,  BaseSize::Small, "Nera Dantels",             "Nera Dantels",          "neradantels",            "B-Wing",                     "bwing",                   "b", mBWING, true,  5, 3, 1, 3, 5, 26, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::System, Upg::Cannon, Upg::Torpedo, Upg::Torpedo} },
 
-  { Faction::Empire, BaseSize::Small, "Major Rhymer",             "Maj. Rhymer",           "majorrhymer",            "TIE Bomber",                 "tiebomber",               "B", true,  7, 2, 2, 6, 0, 26, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
-  { Faction::Empire, BaseSize::Small, "Captain Jonus",            "Capt. Jonus",           "captainjonus",           "TIE Bomber",                 "tiebomber",               "B", true,  6, 2, 2, 6, 0, 22, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
-  { Faction::Empire, BaseSize::Small, "Gamma Squadron Pilot",     "Gamma Sq. Pilot",       "gammasquadronpilot",     "TIE Bomber",                 "tiebomber",               "B", false, 4, 2, 2, 6, 0, 18, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
-  { Faction::Empire, BaseSize::Small, "Schimitar Squadron Pilot", "Schimitar Sq. Pilot",   "schimitarsquadronpilot", "TIE Bomber",                 "tiebomber",               "B", false, 2, 2, 2, 6, 0, 16, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
-  { Faction::Empire, BaseSize::Small, "Tomax Bren",               "Tomax Bren",            "tomaxbren",              "TIE Bomber",                 "tiebomber",               "B", true,  8, 2, 2, 6, 0, 24, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
-  { Faction::Empire, BaseSize::Small, "\"Deathfire\"",            "Deathfire",             "deathfire",              "TIE Bomber",                 "tiebomber",               "B", true,  3, 2, 2, 6, 0, 17, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
-  { Faction::Empire, BaseSize::Small, "Gamma Squadron Veteran",   "Gamma Sq. Vet.",        "gammasquadronveteran",   "TIE Bomber",                 "tiebomber",               "B", false, 5, 2, 2, 6, 0, 19, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
+  { Faction::Empire, BaseSize::Small, "Major Rhymer",             "Maj. Rhymer",           "majorrhymer",            "TIE Bomber",                 "tiebomber",               "B", mTIEBO, true,  7, 2, 2, 6, 0, 26, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
+  { Faction::Empire, BaseSize::Small, "Captain Jonus",            "Capt. Jonus",           "captainjonus",           "TIE Bomber",                 "tiebomber",               "B", mTIEBO, true,  6, 2, 2, 6, 0, 22, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
+  { Faction::Empire, BaseSize::Small, "Gamma Squadron Pilot",     "Gamma Sq. Pilot",       "gammasquadronpilot",     "TIE Bomber",                 "tiebomber",               "B", mTIEBO, false, 4, 2, 2, 6, 0, 18, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
+  { Faction::Empire, BaseSize::Small, "Schimitar Squadron Pilot", "Schimitar Sq. Pilot",   "schimitarsquadronpilot", "TIE Bomber",                 "tiebomber",               "B", mTIEBO, false, 2, 2, 2, 6, 0, 16, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
+  { Faction::Empire, BaseSize::Small, "Tomax Bren",               "Tomax Bren",            "tomaxbren",              "TIE Bomber",                 "tiebomber",               "B", mTIEBO, true,  8, 2, 2, 6, 0, 24, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
+  { Faction::Empire, BaseSize::Small, "\"Deathfire\"",            "Deathfire",             "deathfire",              "TIE Bomber",                 "tiebomber",               "B", mTIEBO, true,  3, 2, 2, 6, 0, 17, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
+  { Faction::Empire, BaseSize::Small, "Gamma Squadron Veteran",   "Gamma Sq. Vet.",        "gammasquadronveteran",   "TIE Bomber",                 "tiebomber",               "B", mTIEBO, false, 5, 2, 2, 6, 0, 19, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Torpedo, Upg::Torpedo, Upg::Missile, Upg::Missile, Upg::Bomb} },
 
-  { Faction::Rebel,  BaseSize::Small, "Airen Cracken",            "Airen Cracken",         "airencracken",           "Z-95 Headhunter",            "z95headhunter",           "z", true,  8, 2, 2, 2, 2, 19, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile} },
-  { Faction::Rebel,  BaseSize::Small, "Lieutenant Blount",        "Lt. Blount",            "lieutenantblout",        "Z-95 Headhunter",            "z95headhunter",           "z", true,  6, 2, 2, 2, 2, 17, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile} },
-  { Faction::Rebel,  BaseSize::Small, "Tala Squadron Pilot",      "Tala Sq. Pilot",        "talasquadronpilot",      "Z-95 Headhunter",            "z95headhunter",           "z", false, 4, 2, 2, 2, 2, 13, Act::Focus|Act::TargetLock,                            {MT,             Upg::Missile} },
-  { Faction::Rebel,  BaseSize::Small, "Bandit Squadron Pilot",    "Bandit Sq. Pilot",      "banditsquadronpilot",    "Z-95 Headhunter",            "z95headhunter",           "z", false, 2, 2, 2, 2, 2, 12, Act::Focus|Act::TargetLock,                            {MT,             Upg::Missile} },
+  { Faction::Rebel,  BaseSize::Small, "Airen Cracken",            "Airen Cracken",         "airencracken",           "Z-95 Headhunter",            "z95headhunter",           "z", mZ95HH, true,  8, 2, 2, 2, 2, 19, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile} },
+  { Faction::Rebel,  BaseSize::Small, "Lieutenant Blount",        "Lt. Blount",            "lieutenantblout",        "Z-95 Headhunter",            "z95headhunter",           "z", mZ95HH, true,  6, 2, 2, 2, 2, 17, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Missile} },
+  { Faction::Rebel,  BaseSize::Small, "Tala Squadron Pilot",      "Tala Sq. Pilot",        "talasquadronpilot",      "Z-95 Headhunter",            "z95headhunter",           "z", mZ95HH, false, 4, 2, 2, 2, 2, 13, Act::Focus|Act::TargetLock,                            {MT,             Upg::Missile} },
+  { Faction::Rebel,  BaseSize::Small, "Bandit Squadron Pilot",    "Bandit Sq. Pilot",      "banditsquadronpilot",    "Z-95 Headhunter",            "z95headhunter",           "z", mZ95HH, false, 2, 2, 2, 2, 2, 12, Act::Focus|Act::TargetLock,                            {MT,             Upg::Missile} },
 
-  { Faction::Empire, BaseSize::Small, "Rexler Brath",             "Rexler Brath",          "rexlerbrath",            "TIE Defender",               "tiedefender",             "D", true,  8, 3, 3, 3, 3, 37, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile} },
-  { Faction::Empire, BaseSize::Small, "Colonel Vessery",          "Col. Vessery",          "colonelvessery",         "TIE Defender",               "tiedefender",             "D", true,  6, 3, 3, 3, 3, 35, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile} },
-  { Faction::Empire, BaseSize::Small, "Onyx Squadron Pilot",      "Onyx Sq. Pilot",        "onyxsquadronpilot",      "TIE Defender",               "tiedefender",             "D", false, 3, 3, 3, 3, 3, 32, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Cannon, Upg::Missile} },
-  { Faction::Empire, BaseSize::Small, "Delta Squadron Pilot",     "Delta Sq. Pilot",       "deltasquadronpilot",     "TIE Defender",               "tiedefender",             "D", false, 1, 3, 3, 3, 3, 30, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Cannon, Upg::Missile} },
-  { Faction::Empire, BaseSize::Small, "Maarek Stele",             "Maarek Steele",         "maarekstele",            "TIE Defender",               "tiedefender",             "D", true,  7, 3, 3, 3, 3, 35, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile} },
-  { Faction::Empire, BaseSize::Small, "Countess Ryad",            "Countess Ryad",         "countessryad",           "TIE Defender",               "tiedefender",             "D", true,  5, 3, 3, 3, 3, 34, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile} },
-  { Faction::Empire, BaseSize::Small, "Glaive Squadron Pilot",    "Glaive Sq. Pilot",      "glaivesquadronpilot",    "TIE Defender",               "tiedefender",             "D", false, 6, 3, 3, 3, 3, 34, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Rexler Brath",             "Rexler Brath",          "rexlerbrath",            "TIE Defender",               "tiedefender",             "D", mTIEDE, true,  8, 3, 3, 3, 3, 37, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Colonel Vessery",          "Col. Vessery",          "colonelvessery",         "TIE Defender",               "tiedefender",             "D", mTIEDE, true,  6, 3, 3, 3, 3, 35, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Onyx Squadron Pilot",      "Onyx Sq. Pilot",        "onyxsquadronpilot",      "TIE Defender",               "tiedefender",             "D", mTIEDE, false, 3, 3, 3, 3, 3, 32, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Cannon, Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Delta Squadron Pilot",     "Delta Sq. Pilot",       "deltasquadronpilot",     "TIE Defender",               "tiedefender",             "D", mTIEDE, false, 1, 3, 3, 3, 3, 30, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Cannon, Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Maarek Stele",             "Maarek Steele",         "maarekstele",            "TIE Defender",               "tiedefender",             "D", mTIEDE, true,  7, 3, 3, 3, 3, 35, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Countess Ryad",            "Countess Ryad",         "countessryad",           "TIE Defender",               "tiedefender",             "D", mTIEDE, true,  5, 3, 3, 3, 3, 34, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile} },
+  { Faction::Empire, BaseSize::Small, "Glaive Squadron Pilot",    "Glaive Sq. Pilot",      "glaivesquadronpilot",    "TIE Defender",               "tiedefender",             "D", mTIEDE, false, 6, 3, 3, 3, 3, 34, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile} },
 
-  { Faction::Rebel,  BaseSize::Small, "Corran Horn",              "Corran Horn",           "corranhorn",             "E-Wing",                     "ewing",                   "e", true,  8, 3, 3, 2, 3, 35, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::System, Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "Etahn A'baht",             "Etahn A'baht",          "etahnabaht",             "E-Wing",                     "ewing",                   "e", true,  5, 3, 3, 2, 3, 32, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::System, Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "Blackmoon Squadron Pilot", "Blackmoon Sq. Pilot",   "blackmoonsquadronpilot", "E-Wing",                     "ewing",                   "e", false, 3, 3, 3, 2, 3, 29, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT,             Upg::System, Upg::Torpedo, Upg::Astromech} },
-  { Faction::Rebel,  BaseSize::Small, "Knave Squadron Pilot",     "Knave Sq. Pilot",       "knavesquadronpilot",     "E-Wing",                     "ewing",                   "e", false, 1, 3, 3, 2, 3, 27, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT,             Upg::System, Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Corran Horn",              "Corran Horn",           "corranhorn",             "E-Wing",                     "ewing",                   "e", mEWING, true,  8, 3, 3, 2, 3, 35, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::System, Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Etahn A'baht",             "Etahn A'baht",          "etahnabaht",             "E-Wing",                     "ewing",                   "e", mEWING, true,  5, 3, 3, 2, 3, 32, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT, Upg::Elite, Upg::System, Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Blackmoon Squadron Pilot", "Blackmoon Sq. Pilot",   "blackmoonsquadronpilot", "E-Wing",                     "ewing",                   "e", mEWING, false, 3, 3, 3, 2, 3, 29, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT,             Upg::System, Upg::Torpedo, Upg::Astromech} },
+  { Faction::Rebel,  BaseSize::Small, "Knave Squadron Pilot",     "Knave Sq. Pilot",       "knavesquadronpilot",     "E-Wing",                     "ewing",                   "e", mEWING, false, 1, 3, 3, 2, 3, 27, Act::Focus|Act::TargetLock|Act::BarrelRoll|Act::Evade, {MT,             Upg::System, Upg::Torpedo, Upg::Astromech} },
 
-  { Faction::Empire, BaseSize::Small, "\"Whisper\"",              "Whisper",               "whisper",                "TIE Phantom",                "tiephantom",              "P", true,  7, 4, 2, 2, 2, 32, Act::Focus|Act::BarrelRoll|Act::Evade|Act::Cloak,      {MT, Upg::Elite, Upg::System, Upg::Crew} },
-  { Faction::Empire, BaseSize::Small, "\"Echo\"",                 "Echo",                  "echo",                   "TIE Phantom",                "tiephantom",              "P", true,  6, 4, 2, 2, 2, 30, Act::Focus|Act::BarrelRoll|Act::Evade|Act::Cloak,      {MT, Upg::Elite, Upg::System, Upg::Crew} },
-  { Faction::Empire, BaseSize::Small, "Shadow Squadron Pilot",    "Shadow Sq. Pilot",      "shadowsquadronpilot",    "TIE Phantom",                "tiephantom",              "P", false, 5, 4, 2, 2, 2, 27, Act::Focus|Act::BarrelRoll|Act::Evade|Act::Cloak,      {MT,             Upg::System, Upg::Crew} },
-  { Faction::Empire, BaseSize::Small, "Sigma Squadron Pilot",     "Signa Sq. Pilot",       "sigmasquadronpilot",     "TIE Phantom",                "tiephantom",              "P", false, 3, 4, 2, 2, 2, 25, Act::Focus|Act::BarrelRoll|Act::Evade|Act::Cloak,      {MT,             Upg::System, Upg::Crew} },
+  { Faction::Empire, BaseSize::Small, "\"Whisper\"",              "Whisper",               "whisper",                "TIE Phantom",                "tiephantom",              "P", mTIEPH, true,  7, 4, 2, 2, 2, 32, Act::Focus|Act::BarrelRoll|Act::Evade|Act::Cloak,      {MT, Upg::Elite, Upg::System, Upg::Crew} },
+  { Faction::Empire, BaseSize::Small, "\"Echo\"",                 "Echo",                  "echo",                   "TIE Phantom",                "tiephantom",              "P", mTIEPH, true,  6, 4, 2, 2, 2, 30, Act::Focus|Act::BarrelRoll|Act::Evade|Act::Cloak,      {MT, Upg::Elite, Upg::System, Upg::Crew} },
+  { Faction::Empire, BaseSize::Small, "Shadow Squadron Pilot",    "Shadow Sq. Pilot",      "shadowsquadronpilot",    "TIE Phantom",                "tiephantom",              "P", mTIEPH, false, 5, 4, 2, 2, 2, 27, Act::Focus|Act::BarrelRoll|Act::Evade|Act::Cloak,      {MT,             Upg::System, Upg::Crew} },
+  { Faction::Empire, BaseSize::Small, "Sigma Squadron Pilot",     "Signa Sq. Pilot",       "sigmasquadronpilot",     "TIE Phantom",                "tiephantom",              "P", mTIEPH, false, 3, 4, 2, 2, 2, 25, Act::Focus|Act::BarrelRoll|Act::Evade|Act::Cloak,      {MT,             Upg::System, Upg::Crew} },
 
-  { Faction::Rebel,  BaseSize::Large, "Dash Rendar",              "Dash Rendar",           "dashrendar",             "YT-2400 Freighter",          "yt2400",                  "o", true,  7, 2, 2, 5, 5, 36, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile, Upg::Crew} },
-  { Faction::Rebel,  BaseSize::Large, "\"Leebo\"",                "Leebo",                 "leebo",                  "YT-2400 Freighter",          "yt2400",                  "o", true,  5, 2, 2, 5, 5, 34, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile, Upg::Crew} },
-  { Faction::Rebel,  BaseSize::Large, "Eaden Vrill",              "Eaden Vrill",           "eadenvrill",             "YT-2400 Freighter",          "yt2400",                  "o", true,  3, 2, 2, 5, 5, 32, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Cannon, Upg::Missile, Upg::Crew} },
-  { Faction::Rebel,  BaseSize::Large, "Wild Space Fringer",       "Wild Space Fringer",    "wildspacefringer",       "YT-2400 Freighter",          "yt2400",                  "o", false, 2, 2, 2, 5, 5, 30, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Cannon, Upg::Missile, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Large, "Dash Rendar",              "Dash Rendar",           "dashrendar",             "YT-2400 Freighter",          "yt2400",                  "o", mYT240, true,  7, 2, 2, 5, 5, 36, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Large, "\"Leebo\"",                "Leebo",                 "leebo",                  "YT-2400 Freighter",          "yt2400",                  "o", mYT240, true,  5, 2, 2, 5, 5, 34, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT, Upg::Elite, Upg::Cannon, Upg::Missile, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Large, "Eaden Vrill",              "Eaden Vrill",           "eadenvrill",             "YT-2400 Freighter",          "yt2400",                  "o", mYT240, true,  3, 2, 2, 5, 5, 32, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Cannon, Upg::Missile, Upg::Crew} },
+  { Faction::Rebel,  BaseSize::Large, "Wild Space Fringer",       "Wild Space Fringer",    "wildspacefringer",       "YT-2400 Freighter",          "yt2400",                  "o", mYT240, false, 2, 2, 2, 5, 5, 30, Act::Focus|Act::TargetLock|Act::BarrelRoll,            {MT,             Upg::Cannon, Upg::Missile, Upg::Crew} },
 
-  { Faction::Empire, BaseSize::Large, "Rear Admiral Chiraneau",   "RADM. Chiraneau",       "rearadmiralchiraneau",   "VT-49 Decimator",            "vt49decimator",           "d", true,  8, 3, 0,12, 4, 46, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Crew, Upg::Crew, Upg::Crew, Upg::Bomb} },
-  { Faction::Empire, BaseSize::Large, "Commander Kenkirk",        "Cmdr. Kenkirk",         "commanderkenkirk",       "VT-49 Decimator",            "vt49decimator",           "d", true,  6, 3, 0,12, 4, 44, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Crew, Upg::Crew, Upg::Crew, Upg::Bomb} },
-  { Faction::Empire, BaseSize::Large, "Captain Oicunn",           "Capt Oicunn",           "captainoicunn",          "VT-49 Decimator",            "vt49decimator",           "d", true,  4, 3, 0,12, 4, 42, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Crew, Upg::Crew, Upg::Crew, Upg::Bomb} },
-  { Faction::Empire, BaseSize::Large, "Patrol Leader",            "Patrol Leader",         "patrolleader",           "VT-49 Decimator",            "vt49decimator",           "d", false, 3, 3, 0,12, 4, 40, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Crew, Upg::Crew, Upg::Crew, Upg::Bomb} },
-
+  { Faction::Empire, BaseSize::Large, "Rear Admiral Chiraneau",   "RADM. Chiraneau",       "rearadmiralchiraneau",   "VT-49 Decimator",            "vt49decimator",           "d", mVT49D, true,  8, 3, 0,12, 4, 46, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Crew, Upg::Crew, Upg::Crew, Upg::Bomb} },
+  { Faction::Empire, BaseSize::Large, "Commander Kenkirk",        "Cmdr. Kenkirk",         "commanderkenkirk",       "VT-49 Decimator",            "vt49decimator",           "d", mVT49D, true,  6, 3, 0,12, 4, 44, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Crew, Upg::Crew, Upg::Crew, Upg::Bomb} },
+  { Faction::Empire, BaseSize::Large, "Captain Oicunn",           "Capt Oicunn",           "captainoicunn",          "VT-49 Decimator",            "vt49decimator",           "d", mVT49D, true,  4, 3, 0,12, 4, 42, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Torpedo, Upg::Crew, Upg::Crew, Upg::Crew, Upg::Bomb} },
+  { Faction::Empire, BaseSize::Large, "Patrol Leader",            "Patrol Leader",         "patrolleader",           "VT-49 Decimator",            "vt49decimator",           "d", mVT49D, false, 3, 3, 0,12, 4, 40, Act::Focus|Act::TargetLock,                            {MT,             Upg::Torpedo, Upg::Crew, Upg::Crew, Upg::Crew, Upg::Bomb} },
+/*
   { Faction::Scum,   BaseSize::Small, "Kavil",                    "Kavil",                 "kavil",                  "Y-Wing",                     "ywing",                   "y", true,  7, 2, 1, 5, 3, 24, Act::Focus|Act::TargetLock,                            {MT, Upg::Elite, Upg::Turret, Upg::Torpedo, Upg::Torpedo, Upg::SalvagedAstromech} },
   { Faction::Scum,   BaseSize::Small, "Drea Renthal",             "Drea Renthal",          "drearenthal",            "Y-Wing",                     "ywing",                   "y", true,  5, 2, 1, 5, 3, 22, Act::Focus|Act::TargetLock,                            {MT,             Upg::Turret, Upg::Torpedo, Upg::Torpedo, Upg::SalvagedAstromech} },
   { Faction::Scum,   BaseSize::Small, "Hired Gun",                "Hired Gun",             "hiredgun",               "Y-Wing",                     "ywing",                   "y", false, 4, 2, 1, 5, 3, 20, Act::Focus|Act::TargetLock,                            {MT,             Upg::Turret, Upg::Torpedo, Upg::Torpedo, Upg::SalvagedAstromech} },
@@ -270,4 +403,5 @@ std::list<Pilot> Pilot::pilots = {
   { Faction::Empire, BaseSize::Small, "Black Squadron Scout",     "Black Sq. Pilot",        "blacksquadronpilot",     "TIE Striker",                "tiestriker",              "T", true,  4, 3, 2, 4, 0, 20, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT, Upg::Elite} },
   { Faction::Empire, BaseSize::Small, "Scarif Defender",          "Scarif Defender",        "scarifdefender",         "TIE Striker",                "tiestriker",              "T", true,  3, 3, 2, 4, 0, 18, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT,           } },
   { Faction::Empire, BaseSize::Small, "Imperial Trainee",         "Imperial Trainee",       "imperialtrainss",        "TIE Striker",                "tiestriker",              "T", true,  1, 3, 2, 4, 0, 17, Act::Focus|Act::BarrelRoll|Act::Evade,                 {MT,           } },
+  */
 };
