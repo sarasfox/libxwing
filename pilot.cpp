@@ -6,9 +6,6 @@
 
 
 
-//Maneuver
-
-
 Pilot Pilot::GetPilot(std::string pilot, std::string faction, std::string ship) {
   for(Pilot &ps : Pilot::pilots) {
     if((ps.GetPilotNameXws() == pilot) && (ps.GetFaction() == StringToFaction(faction)) && (ps.GetShipNameXws() == ship)) {
@@ -18,7 +15,7 @@ Pilot Pilot::GetPilot(std::string pilot, std::string faction, std::string ship) 
   throw std::invalid_argument("Unknown ship (" + pilot + "/" + faction + "/" + ship + ")");
 }
 
-
+std::list<Pilot> Pilot::GetAllPilots() { return Pilot::pilots; }
 
 void Pilot::SanityCheck() {
   typedef std::tuple<std::string, std::string, std::string> Entry;
