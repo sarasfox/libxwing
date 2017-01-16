@@ -47,18 +47,18 @@ void Upgrade::SanityCheck() {
 
 
 Upgrade::Upgrade(std::string      n,
-		 std::string      ns,
-		 std::string      nx,
-		 Upg              typ,
-		 std::vector<Upg> slts,
-		 int8_t           cst,
-		 bool             uni,
-		 bool             lim,
-		 Modifiers        um,
-		 RestrictionCheck rc)
-  : name(n), nameShort(ns), nameXws(nx), type(typ), slots(slts), cost(cst),
-    isUnique(uni), isLimited(lim), modifier(um), restrictionCheck(rc),
-    isEnabled(true) { }
+                 std::string      ns,
+                 std::string      nx,
+                 Upg              typ,
+                 std::vector<Upg> slts,
+                 int8_t           cst,
+                 bool             uni,
+                 bool             lim,
+                 Modifiers        um,
+                 RestrictionCheck rc,
+                 std::string      txt)
+  : isEnabled(true),name(n), nameShort(ns), nameXws(nx), type(typ), slots(slts), cost(cst),
+    isUnique(uni), isLimited(lim), modifier(um), restrictionCheck(rc), text(txt) { }
 
 std::string      Upgrade::GetUpgradeName()      const { return this->name; }
 std::string      Upgrade::GetUpgradeNameShort() const { return this->nameShort; }
