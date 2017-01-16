@@ -35,21 +35,21 @@ class Upgrade {
   static Upgrade GetUpgrade(std::string category, std::string name);
   static void SanityCheck();
 
-  std::string GetUpgradeName();
-  std::string GetUpgradeNameShort();
-  std::string GetUpgradeNameXws();
+  std::string GetUpgradeName()      const;
+  std::string GetUpgradeNameShort() const;
+  std::string GetUpgradeNameXws()   const;
 
-  Upg              GetType();
-  std::vector<Upg> GetSlots();
-  int8_t           GetCost();
-  bool             GetIsUnique();
-  bool             GetIsLimited();
-  Modifiers        GetModifier();
-  RestrictionCheck GetRestrictionCheck();
+  Upg              GetType()  const;
+  std::vector<Upg> GetSlots() const;
+  int8_t           GetCost()  const;
+  bool             GetIsUnique() const;
+  bool             GetIsLimited() const;
+  Modifiers        GetModifier() const;
+  RestrictionCheck GetRestrictionCheck() const;
 
   void Enable();
   void Disable();
-  bool GetIsEnabled();
+  bool GetIsEnabled() const;
 
   void Dump();
 

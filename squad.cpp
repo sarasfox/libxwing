@@ -109,9 +109,9 @@ std::vector<std::string> Squad::Verify() {
 
 
 
-std::string         Squad::GetName()        { return this->name; }
-std::string         Squad::GetDescription() { return this->description; }
-Faction             Squad::GetFaction()     { return this->faction; }
+std::string         Squad::GetName()        const { return this->name; }
+std::string         Squad::GetDescription() const { return this->description; }
+Faction             Squad::GetFaction()     const { return this->faction; }
 std::vector<Pilot>& Squad::GetPilots()      { return this->pilots; }
 
 void Squad::Dump() {

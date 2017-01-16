@@ -47,46 +47,45 @@ public:
   static Pilot GetPilot(std::string pilot, std::string faction, std::string ship);
   static std::list<Pilot> GetAllPilots();
   static void SanityCheck();
+\
+  Faction     GetFaction()        const;
+  BaseSize    GetBaseSize()       const;
+  std::string GetPilotName()      const;
+  std::string GetPilotNameShort() const;
+  std::string GetPilotNameXws()   const;
+  std::string GetShipName()       const;
+  std::string GetShipNameXws()    const;
+  std::string GetShipGlyph()      const;
+  Maneuvers   GetManeuvers()      const;
+  bool        GetIsUnique()       const;
 
-  Faction     GetFaction();
-  BaseSize    GetBaseSize();
-  std::string GetPilotName();
-  std::string GetPilotNameShort();
-  std::string GetPilotNameXws();
-  std::string GetShipName();
-  std::string GetShipNameXws();
-  std::string GetShipGlyph();
-  Maneuvers   GetManeuvers();
-  bool        GetIsUnique();
-
-
-  int8_t GetNatSkill();
-  int8_t GetNatAttack();
-  int8_t GetNatAgility();
-  int8_t GetNatHull();
-  int8_t GetNatShield();
-  int8_t GetNatCost();
-  Act    GetNatActions();
-  std::vector<Upg> GetNatPossibleUpgrades();
+  int8_t GetNatSkill()   const;
+  int8_t GetNatAttack()  const;
+  int8_t GetNatAgility() const;
+  int8_t GetNatHull()    const;
+  int8_t GetNatShield()  const;
+  int8_t GetNatCost()    const;
+  Act    GetNatActions() const;
+  std::vector<Upg> GetNatPossibleUpgrades() const;
   
-  int8_t GetModSkill();
-  int8_t GetModAttack();
-  int8_t GetModAgility();
-  int8_t GetModHull();
-  int8_t GetModShield();
-  int8_t GetModCost();
-  Act    GetModActions();
-  std::vector<Upg> GetModPossibleUpgrades();
+  int8_t GetModSkill()   const;
+  int8_t GetModAttack()  const;
+  int8_t GetModAgility() const;
+  int8_t GetModHull()    const;
+  int8_t GetModShield()  const;
+  int8_t GetModCost()    const;
+  Act    GetModActions() const;
+  std::vector<Upg> GetModPossibleUpgrades() const;
 
-  std::vector<Upgrade>& GetAppliedUpgrades();
+  std::vector<Upgrade> GetAppliedUpgrades() const;
 
   void ApplyUpgrade(Upgrade u);
 
-  bool   GetIsEnabled();
-  int8_t GetCurShield();
-  int8_t GetCurHull();
-  int8_t GetShieldHits();
-  int8_t GetHullHits();
+  bool   GetIsEnabled()  const;
+  int8_t GetCurShield()  const;
+  int8_t GetCurHull()    const;
+  int8_t GetShieldHits() const;
+  int8_t GetHullHits()   const;
 
   void Enable();
   void Disable();

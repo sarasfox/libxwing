@@ -72,27 +72,27 @@ Pilot::Pilot(Faction     fact,
     actions(ac), possibleUpgrades(up),
     isEnabled(true), shieldHits(0), hullHits(0) { }
 
-Faction     Pilot::GetFaction()        { return this->faction; }
-BaseSize    Pilot::GetBaseSize()       { return this->baseSize; }
-std::string Pilot::GetPilotName()      { return this->pilotName; }
-std::string Pilot::GetPilotNameShort() { return this->pilotNameShort; }
-std::string Pilot::GetPilotNameXws()   { return this->pilotNameXws; }
-std::string Pilot::GetShipName()       { return this->shipName; }
-std::string Pilot::GetShipNameXws()    { return this->shipNameXws; }
-std::string Pilot::GetShipGlyph()      { return this->shipGlyph; }
-Maneuvers   Pilot::GetManeuvers()      { return this->maneuvers; }
-bool        Pilot::GetIsUnique()       { return this->isUnique; }
+Faction     Pilot::GetFaction()        const { return this->faction; }
+BaseSize    Pilot::GetBaseSize()       const { return this->baseSize; }
+std::string Pilot::GetPilotName()      const { return this->pilotName; }
+std::string Pilot::GetPilotNameShort() const { return this->pilotNameShort; }
+std::string Pilot::GetPilotNameXws()   const { return this->pilotNameXws; }
+std::string Pilot::GetShipName()       const { return this->shipName; }
+std::string Pilot::GetShipNameXws()    const { return this->shipNameXws; }
+std::string Pilot::GetShipGlyph()      const { return this->shipGlyph; }
+Maneuvers   Pilot::GetManeuvers()      const { return this->maneuvers; }
+bool        Pilot::GetIsUnique()       const { return this->isUnique; }
 
-int8_t Pilot::GetNatSkill()   { return this->skill; }
-int8_t Pilot::GetNatAttack()  { return this->attack; }
-int8_t Pilot::GetNatAgility() { return this->agility; }
-int8_t Pilot::GetNatHull()    { return this->hull; }
-int8_t Pilot::GetNatShield()  { return this->shield; }
-int8_t Pilot::GetNatCost()    { return this->cost; }
-Act    Pilot::GetNatActions() { return this->actions; }
-std::vector<Upg> Pilot::GetNatPossibleUpgrades() { return this->possibleUpgrades; }
+int8_t Pilot::GetNatSkill()   const { return this->skill; }
+int8_t Pilot::GetNatAttack()  const { return this->attack; }
+int8_t Pilot::GetNatAgility() const { return this->agility; }
+int8_t Pilot::GetNatHull()    const { return this->hull; }
+int8_t Pilot::GetNatShield()  const { return this->shield; }
+int8_t Pilot::GetNatCost()    const { return this->cost; }
+Act    Pilot::GetNatActions() const { return this->actions; }
+std::vector<Upg> Pilot::GetNatPossibleUpgrades() const { return this->possibleUpgrades; }
 
-int8_t Pilot::GetModSkill() {
+int8_t Pilot::GetModSkill() const {
   int8_t skill = this->skill;
   for(Upgrade u : this->appliedUpgrades) {
     if(u.GetIsEnabled()) {
@@ -101,7 +101,7 @@ int8_t Pilot::GetModSkill() {
   }
   return skill;
 }
-int8_t Pilot::GetModAttack() {
+int8_t Pilot::GetModAttack() const {
   int8_t attack = this->attack;
   for(Upgrade u : this->appliedUpgrades) {
     if(u.GetIsEnabled()) {
@@ -110,7 +110,7 @@ int8_t Pilot::GetModAttack() {
   }
   return attack;
 }
-int8_t Pilot::GetModAgility() {
+int8_t Pilot::GetModAgility() const {
   int8_t agility = this->agility;
   for(Upgrade u : this->appliedUpgrades) {
     if(u.GetIsEnabled()) {
@@ -119,7 +119,7 @@ int8_t Pilot::GetModAgility() {
   }
   return agility;
 }
-int8_t Pilot::GetModHull() {
+int8_t Pilot::GetModHull() const {
   int8_t hull = this->hull;
   for(Upgrade u : this->appliedUpgrades) {
     if(u.GetIsEnabled()) {
@@ -128,7 +128,7 @@ int8_t Pilot::GetModHull() {
   }
   return hull;
 }
-int8_t Pilot::GetModShield() {
+int8_t Pilot::GetModShield() const {
   int8_t shield = this->shield;
   for(Upgrade u : this->appliedUpgrades) {
     if(u.GetIsEnabled()) {
@@ -137,7 +137,7 @@ int8_t Pilot::GetModShield() {
   }
   return shield;
 }
-int8_t Pilot::GetModCost() {
+int8_t Pilot::GetModCost() const {
   int8_t cost = this->cost;
   for(Upgrade u : this->appliedUpgrades) {
     cost += u.GetCost();
@@ -145,7 +145,7 @@ int8_t Pilot::GetModCost() {
   }
   return cost;
 }
-Act Pilot::GetModActions() {
+Act Pilot::GetModActions() const {
   Act act = this->actions;
   for(Upgrade u : this->appliedUpgrades) {
     if(u.GetIsEnabled()) {
@@ -156,7 +156,7 @@ Act Pilot::GetModActions() {
   return act;
 }
 
-std::vector<Upg> Pilot::GetModPossibleUpgrades() {
+std::vector<Upg> Pilot::GetModPossibleUpgrades() const {
   std::vector<Upg> upg = this->possibleUpgrades;
   for(Upgrade u : this->appliedUpgrades) {
     if(u.GetIsEnabled()) {
@@ -168,13 +168,13 @@ std::vector<Upg> Pilot::GetModPossibleUpgrades() {
 }
 
 
-std::vector<Upgrade>& Pilot::GetAppliedUpgrades()  { return this->appliedUpgrades; }
+std::vector<Upgrade> Pilot::GetAppliedUpgrades() const { return this->appliedUpgrades; }
 
-bool   Pilot::GetIsEnabled()  { return this->isEnabled; }
-int8_t Pilot::GetCurShield()  { return this->GetModShield() - this->shieldHits; }
-int8_t Pilot::GetCurHull()    { return this->GetModHull() - this->hullHits; }
-int8_t Pilot::GetShieldHits() { return this->shieldHits; }
-int8_t Pilot::GetHullHits()   { return this->hullHits; }
+bool   Pilot::GetIsEnabled()  const { return this->isEnabled; }
+int8_t Pilot::GetCurShield()  const { return this->GetModShield() - this->shieldHits; }
+int8_t Pilot::GetCurHull()    const { return this->GetModHull() - this->hullHits; }
+int8_t Pilot::GetShieldHits() const { return this->shieldHits; }
+int8_t Pilot::GetHullHits()   const { return this->hullHits; }
 
 void Pilot::Enable()   { this->isEnabled = true; }
 void Pilot::Disable()  { this->isEnabled = false; }
