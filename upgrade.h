@@ -33,6 +33,7 @@ typedef std::function<std::vector<std::string>(const Pilot&)> RestrictionCheck;
 class Upgrade {
  public:
   static Upgrade GetUpgrade(std::string category, std::string name);
+  static std::list<Upgrade> GetAllUpgrades();
   static void SanityCheck();
 
   std::string GetUpgradeName()      const;

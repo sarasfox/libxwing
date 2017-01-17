@@ -15,7 +15,7 @@ Upgrade Upgrade::GetUpgrade(std::string category, std::string name) {
   throw std::invalid_argument("Unknown upgrade (" + category + "/" + name + ")");
 }
 
-
+std::list<Upgrade> Upgrade::GetAllUpgrades() { return Upgrade::upgrades; }
 
 void Upgrade::SanityCheck() {
   typedef std::tuple<std::string, std::string> Entry;
