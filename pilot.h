@@ -47,7 +47,7 @@ public:
   static Pilot GetPilot(std::string pilot, std::string faction, std::string ship);
   static std::list<Pilot> GetAllPilots();
   static void SanityCheck();
-\
+
   Faction     GetFaction()        const;
   BaseSize    GetBaseSize()       const;
   std::string GetPilotName()      const;
