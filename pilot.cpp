@@ -63,14 +63,14 @@ Pilot::Pilot(Faction     fact,
              int8_t      sh,
              int8_t      cs,
              Act         ac,
-             std::vector<Upg> up)
+             std::vector<Upg> up,
+             bool        ha,
+             std::string txt)
   : faction(fact), baseSize(bs),
     pilotName(name), pilotNameShort(snam), pilotNameXws(xnam),
-    shipName(ship), shipNameXws(xshi), shipGlyph(gly), maneuvers(man),
-    isUnique(uni), skill(ps),
-    attack(at), agility(ag), hull(hu), shield(sh), cost(cs),
-    actions(ac), possibleUpgrades(up),
-    isEnabled(true), shieldHits(0), hullHits(0) { }
+    shipName(ship), shipNameXws(xshi), shipGlyph(gly), hasAbility(ha), text(txt), maneuvers(man),
+    isUnique(uni), skill(ps), attack(at), agility(ag), hull(hu), shield(sh), cost(cs),
+    actions(ac), possibleUpgrades(up), isEnabled(true), shieldHits(0), hullHits(0) { }
 
 Faction     Pilot::GetFaction()        const { return this->faction; }
 BaseSize    Pilot::GetBaseSize()       const { return this->baseSize; }
@@ -80,6 +80,8 @@ std::string Pilot::GetPilotNameXws()   const { return this->pilotNameXws; }
 std::string Pilot::GetShipName()       const { return this->shipName; }
 std::string Pilot::GetShipNameXws()    const { return this->shipNameXws; }
 std::string Pilot::GetShipGlyph()      const { return this->shipGlyph; }
+bool        Pilot::GetHasAbility()     const { return this->hasAbility; }
+std::string Pilot::GetText()           const { return this->text; }
 Maneuvers   Pilot::GetManeuvers()      const { return this->maneuvers; }
 bool        Pilot::GetIsUnique()       const { return this->isUnique; }
 

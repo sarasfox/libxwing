@@ -33,6 +33,7 @@ typedef std::function<std::vector<std::string>(const Pilot&)> RestrictionCheck;
 class Upgrade {
  public:
   static Upgrade GetUpgrade(std::string category, std::string name);
+  static std::list<Upgrade> GetAllUpgrades();
   static void SanityCheck();
 
   std::string GetUpgradeName()      const;
@@ -54,6 +55,7 @@ class Upgrade {
   void Dump();
 
  private:
+  bool             isEnabled;
   std::string      name;
   std::string      nameShort;
   std::string      nameXws;
@@ -64,19 +66,19 @@ class Upgrade {
   bool             isLimited;
   Modifiers        modifier;
   RestrictionCheck restrictionCheck;
-
-  bool isEnabled;
+  std::string      text;
 
   static std::list<Upgrade> upgrades;
 
-  Upgrade(std::string      n,
-	  std::string      ns,
-	  std::string      nx,
-	  Upg              typ,
-	  std::vector<Upg> slt,
-	  int8_t           cst,
-	  bool             uni,
-	  bool             lim,
-	  Modifiers        um,
-	  RestrictionCheck rc);
+  Upgrade(std::string       n,
+          std::string       ns,
+          std::string       nx,
+          Upg               typ,
+          std::vector<Upg>  slt,
+          int8_t            cst,
+          bool              uni,
+          bool              lim,
+          Modifiers         um,
+          RestrictionCheck  rc,
+          std::string       txt);
 };

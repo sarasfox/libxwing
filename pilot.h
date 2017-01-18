@@ -47,7 +47,7 @@ public:
   static Pilot GetPilot(std::string pilot, std::string faction, std::string ship);
   static std::list<Pilot> GetAllPilots();
   static void SanityCheck();
-\
+
   Faction     GetFaction()        const;
   BaseSize    GetBaseSize()       const;
   std::string GetPilotName()      const;
@@ -56,6 +56,8 @@ public:
   std::string GetShipName()       const;
   std::string GetShipNameXws()    const;
   std::string GetShipGlyph()      const;
+  bool        GetHasAbility()     const;
+  std::string GetText()           const;
   Maneuvers   GetManeuvers()      const;
   bool        GetIsUnique()       const;
 
@@ -105,6 +107,8 @@ private:
   std::string shipName;
   std::string shipNameXws;
   std::string shipGlyph;
+  bool        hasAbility;
+  std::string text;
   Maneuvers   maneuvers;
   bool   isUnique;
   int8_t skill;
@@ -140,5 +144,7 @@ private:
         int8_t      sh,
         int8_t      cs,
         Act         ac,
-        std::vector<Upg> up);
+        std::vector<Upg> up,
+        bool ha=false,
+        std::string txt="");
 };
