@@ -38,9 +38,6 @@ struct Maneuver {
 };
 
 typedef std::vector<Maneuver> Maneuvers;
-//class Maneuvers : public std::vector<Maneuver> {
-//};
-
 
 class Pilot {
 public:
