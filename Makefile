@@ -8,8 +8,8 @@ FLAGS= $(DEBUG) -std=c++14
 
 all: libxwing.a
 
-libxwing.a: jsoncpp.o shared.o pilot.o upgrade.o pilotdb.o upgradedb.o squad.o
-	$(A) cr libxwing.a jsoncpp.o shared.o pilot.o upgrade.o pilotdb.o upgradedb.o squad.o
+libxwing.a: jsoncpp.o shared.o pilot.o upgrade.o pilotdb.o upgradedb.o squad.o test.o
+	$(A) cr libxwing.a jsoncpp.o shared.o pilot.o upgrade.o pilotdb.o upgradedb.o squad.o test.o
 
 pilotdb.o: pilotdb.cpp pilot.h shared.h
 	$(C) $(NOLINK) $(FLAGS) pilotdb.cpp -o pilotdb.o -I/usr/local/include
@@ -28,6 +28,9 @@ squad.o: squad.cpp squad.h shared.h
 
 shared.o: shared.cpp shared.h
 	$(C) $(NOLINK) $(FLAGS) shared.cpp -o shared.o -I/usr/local/include
+
+test.o: test.cpp test.h
+	$(C) $(NOLINK) $(FLAGS) test.cpp -o test.o -I/usr/local/include
 
 jsoncpp.o: jsoncpp.cpp json/json.h
 	$(C) $(CPPFLAGS) $(NOLINK) jsoncpp.cpp -o jsoncpp.o

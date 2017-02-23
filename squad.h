@@ -11,8 +11,8 @@ class Squad {
   std::string GetName()        const;
   std::string GetDescription() const;
   Faction     GetFaction()     const;
+  uint16_t    GetCost();
   std::vector<Pilot>& GetPilots();
-
   void Dump();
 
  private:

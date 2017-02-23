@@ -112,6 +112,13 @@ std::vector<std::string> Squad::Verify() {
 std::string         Squad::GetName()        const { return this->name; }
 std::string         Squad::GetDescription() const { return this->description; }
 Faction             Squad::GetFaction()     const { return this->faction; }
+uint16_t            Squad::GetCost() {
+  uint16_t cost=0;
+  for(auto p : this->GetPilots()) {
+    cost += p.GetModCost();
+  }
+  return cost;
+}
 std::vector<Pilot>& Squad::GetPilots()      { return this->pilots; }
 
 void Squad::Dump() {
