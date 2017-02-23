@@ -72,14 +72,16 @@ void RunTestXwsFiles(std::string testFilesDir) {
         bool objSquadValid = (sq.Verify().size() == 0);
         if(xwsSquadValid != objSquadValid) {
           ok=false;
-          printf("ERROR (incorrect validity check)\n");
+          printf("ERROR - Validity [xws:%s obj:%s]\n", xwsSquadValid ? "valid" : "invalid", objSquadValid ? "valid" : "invalid");
         }
 
         // check squad cost
-        if(root.get("points", "").asInt() != sq.GetCost()) {
-          if(!ok) { printf("\n%-*s", listNameLength, ""); }
+        uint16_t xwsCost = root.get("points", "").asInt();
+        uint16_t objCost = sq.GetCost();
+        if(xwsCost != objCost) {
+          if(!ok) { printf("%-*s ", listNameLength, ""); }
           ok=false;
-          printf("ERROR (squad cost mismatch\n)");
+          printf("ERROR - Cost [xws:%d obj:%d]\n", xwsCost, objCost);
         }
 
         // check individual ship costs
@@ -87,8 +89,9 @@ void RunTestXwsFiles(std::string testFilesDir) {
           int xwsShipCost = root["pilots"][i].get("points", "").asInt();
           int objShipCost = sq.GetPilots()[i].GetModCost();
           if(xwsShipCost != objShipCost) {
+            if(!ok) { printf("%-*s ", listNameLength, ""); }
             ok = false;
-            printf("ERROR (ship cost mismatch)\n");
+            printf("ERROR - Cost(Ship %d) [xws=%d obj=%d]\n", i+1, xwsShipCost, objShipCost);
             break;
           }
         }
